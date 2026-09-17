@@ -17,7 +17,7 @@ export default function Header() {
         </Link>
 
         <Link
-          href="/shop"
+          href="/basket"
           className="relative text-lg font-black uppercase italic transition hover:text-[#ff3b30]"
         >
           SHOP
@@ -25,7 +25,7 @@ export default function Header() {
         </Link>
 
         <Link
-          href="/login"
+          href="http://localhost:9000/api/v1/auth/google"
           className="flex h-10 w-10 items-center justify-center rounded-full border border-white/30 transition hover:border-[#ff3b30] hover:bg-[#ff3b30]"
         >
           <svg
