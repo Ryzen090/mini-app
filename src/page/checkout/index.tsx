@@ -2,6 +2,7 @@
 
 import React from "react";
 import { Zone } from "@/model/ticket";
+import { Ticket } from "@/components";
 
 type BookingProps = {
   isOpen: boolean;
@@ -43,19 +44,19 @@ export default function Booking({ isOpen, onClose, items }: BookingProps) {
 
   return (
     <div
-      className="fixed inset-0 z-[100] flex items-end justify-center bg-black/80 p-0 backdrop-blur-md sm:items-center sm:p-4"
+      className="fixed inset-0 z-100 flex items-end justify-center bg-black/80 p-0 backdrop-blur-md sm:items-center sm:p-4"
       onMouseDown={onClose}
     >
       <div
-        className="relative w-full max-w-md overflow-hidden rounded-t-3xl border border-zinc-800 bg-[#0b0b0f] shadow-[0_25px_100px_rgba(0,0,0,0.8)] sm:rounded-3xl"
+        className="relative max-h-[90vh] w-full max-w-3xl overflow-y-auto rounded-t-3xl border border-zinc-800 bg-[#0b0b0f] shadow-[0_25px_100px_rgba(0,0,0,0.8)] sm:rounded-3xl"
         onMouseDown={(e) => e.stopPropagation()}
       >
-        <div className="pointer-events-none absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-red-500/10 to-transparent" />
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-32 bg-linear-to-b from-red-500/10 to-transparent" />
 
         <div className="relative flex items-center justify-between border-b border-zinc-800/80 px-5 py-4">
           <div>
             <h2 className="mt-1 text-lg font-semibold text-white uppercase">
-              Select your tickets
+              your tickets {items.name}
             </h2>
           </div>
 
@@ -77,6 +78,7 @@ export default function Booking({ isOpen, onClose, items }: BookingProps) {
         </div>
 
         <div className="relative space-y-5 p-5">
+          <Ticket item={items} />
           <div className="space-y-3 rounded-2xl border border-zinc-800 bg-zinc-950 p-4">
             <div className="flex items-center justify-between">
               <label className="block text-xs font-bold uppercase tracking-wider text-zinc-400">
@@ -137,23 +139,23 @@ export default function Booking({ isOpen, onClose, items }: BookingProps) {
                 </div>
               </div>
 
-              <div className="flex items-center justify-between text-sm font-mono">
+              <div className="flex items-center justify-between text-sm">
                 <span className="text-zinc-400">Quantity</span>
 
-                <span className="flex h-6 min-w-[24px] items-center justify-center rounded-md bg-zinc-800 px-2 text-xs font-bold text-white">
+                <span className="flex h-6 min-w-6 items-center justify-center rounded-md bg-zinc-800 px-2 text-xs font-bold text-white">
                   {quantity}
                 </span>
               </div>
 
-              <div className="my-4 h-px w-full bg-gradient-to-r from-transparent via-zinc-800 to-transparent" />
+              <div className="my-4 h-px w-full bg-linear-to-r from-transparent via-zinc-800 to-transparent" />
 
               <div className="mb-2 flex items-end justify-between font-mono">
                 <div>
-                  <p className="mb-1 text-xs font-medium uppercase tracking-wider text-zinc-500">
-                    Total Due
+                  <p className="text-xs font-medium uppercase tracking-wider text-zinc-500">
+                    Total
                   </p>
 
-                  <p className="text-3xl font-extrabold text-white">
+                  <p className="text-3xl font-extrabold text-white mt-3">
                     ${total.toFixed(2)}
                   </p>
                 </div>

@@ -3,7 +3,7 @@
 import React from "react";
 import Stadium from "@/components/stadium";
 import { Zone } from "@/model/ticket";
-import Booking from "../booking";
+import Booking from "../checkout";
 
 const data = [
   {
