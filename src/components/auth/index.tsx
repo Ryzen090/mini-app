@@ -1,0 +1,23 @@
+"use client";
+
+import { useEffect } from "react";
+import { useSearchParams } from "next/navigation";
+
+export default function Auth() {
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const token = searchParams.get("token");
+
+    if (!token) return;
+
+    localStorage.setItem("token", token);
+
+    const url = new URL(window.location.href);
+    url.searchParams.delete("token");
+
+    window.history.replaceState({}, "", url.pathname);
+  }, [searchParams]);
+
+  return null;
+}
