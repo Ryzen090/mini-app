@@ -64,9 +64,9 @@ export default function Header() {
 
   return (
     <header className="fixed inset-x-0 top-0 z-50 bg-black text-white">
-      <div className="mx-auto flex h-[86px] max-w-7xl items-center justify-between px-6">
+      <div className="mx-auto flex h-21.5 max-w-7xl items-center justify-between px-6">
         <Link href="/" className="group">
-          <div className="text-3xl font-black italic tracking-[-0.1em] transition group-hover:text-[#ff3b30]">
+          <div className="text-3xl font-black italic -tracking-widest transition group-hover:text-[#ff3b30]">
             PKRSR
           </div>
 
@@ -199,7 +199,7 @@ export default function Header() {
                   </button>
                 </div>
 
-                <div className="border-t border-white/5 bg-white/[0.02] px-5 py-3">
+                <div className="border-t border-white/5 bg-white/2 px-5 py-3">
                   <p className="text-center text-[8px] font-bold uppercase tracking-[0.3em] text-white/20">
                     PKRSR FOOTBALL CLUB
                   </p>
@@ -210,7 +210,7 @@ export default function Header() {
         ) : (
           <a
             href={API_URL}
-            className="group flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-white/[0.03] text-white transition-all duration-300 hover:border-[#ff3b30] hover:bg-[#ff3b30]"
+            className="group flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-white/3 text-white transition-all duration-300 hover:border-[#ff3b30] hover:bg-[#ff3b30]"
             aria-label="Login"
           >
             <svg
