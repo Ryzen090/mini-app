@@ -128,22 +128,69 @@ export default function HomePage() {
           <div className="absolute -top-32 -left-32 w-96 h-96 bg-[#ff3b30]/15 rounded-full blur-[100px] pointer-events-none" />
           <div className="absolute -bottom-32 -right-32 w-96 h-96 bg-cyan-500/10 rounded-full blur-[100px] pointer-events-none" />
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-emerald-500/[0.04] via-transparent to-transparent pointer-events-none" />
+          <div className="w-full mb-6">
+            <div className="flex flex-col items-center">
+              <div className="mb-4 flex items-center gap-2">
+                <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-zinc-500">
+                  Cambodian Premier League
+                </span>
+              </div>
 
-          <div className="w-full flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-zinc-800">
-            <div>
-              <h2 className="text-lg sm:text-2xl font-extrabold text-white uppercase tracking-wider">
-                Stadium Seating Map
-              </h2>
-              <p className="text-xs sm:text-sm text-zinc-400">
-                Click a stand to select your category and seats
-              </p>
+              <div className="flex w-full max-w-2xl items-center justify-center gap-6 sm:gap-12">
+                <div className="flex flex-1 flex-col items-center">
+                  <div className="flex h-16 w-16 sm:h-20 sm:w-20 items-center justify-center rounded-full border border-zinc-800 bg-zinc-950">
+                    <span className="text-[9px] font-bold text-zinc-600">
+                      LOGO
+                    </span>
+                  </div>
+
+                  <h3 className="mt-3 text-center text-sm sm:text-base font-black uppercase text-white">
+                    Phnom Penh Crown
+                  </h3>
+                </div>
+
+                <div className="flex shrink-0 flex-col items-center">
+                  <span className="text-[9px] font-bold uppercase tracking-widest text-zinc-600">
+                    28 Sep 2026
+                  </span>
+
+                  <span className="mt-2 text-2xl sm:text-3xl font-black tracking-tight text-white">
+                    06:00
+                  </span>
+
+                  <span className="mt-1 text-[10px] font-black uppercase italic text-red-500">
+                    VS
+                  </span>
+                </div>
+
+                <div className="flex flex-1 flex-col items-center">
+                  <div className="flex h-16 w-16 sm:h-20 sm:w-20 items-center justify-center rounded-full border border-zinc-800 bg-zinc-950">
+                    <span className="text-[9px] font-bold text-zinc-600">
+                      LOGO
+                    </span>
+                  </div>
+
+                  <h3 className="mt-3 text-center text-sm sm:text-base font-black uppercase text-white">
+                    Visakha FC
+                  </h3>
+                </div>
+              </div>
+
+              <div className="mt-5 flex items-center gap-2 text-xs text-zinc-500">
+                <span>PKRSR STADIUM</span>
+              </div>
             </div>
-            <div className="flex items-center gap-2 text-xs font-mono bg-zinc-950 px-3.5 py-2 rounded-xl border border-zinc-800 text-zinc-300">
-              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
-              Live Availability
+
+            <div className="mt-6 flex items-center gap-4">
+              <div className="h-px flex-1 bg-zinc-800" />
+
+              <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-zinc-600">
+                Select Your Stand
+              </span>
+
+              <div className="h-px flex-1 bg-zinc-800" />
             </div>
           </div>
-
           <svg
             xmlns="https://www.w3.org/2000/svg"
             version="1.1"
@@ -1785,7 +1832,6 @@ export default function HomePage() {
               </g>
             </g>
           </svg>
-
           {/* Stand Categories Legend */}
           <div className="w-full mt-6 pt-6 border-t border-zinc-800/80">
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
