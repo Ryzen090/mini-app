@@ -3,6 +3,12 @@ export enum TicketStatus {
   Available = 2,
 }
 
+export type CheckoutData = {
+  item: string;
+  quantity: number;
+  price: number;
+};
+
 export type Zone = {
   _id?: string;
   id: string;

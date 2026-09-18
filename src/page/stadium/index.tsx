@@ -1,9 +1,9 @@
 "use client";
 
 import React from "react";
-import Stadium from "@/components/stadium";
+import Checkout from "../checkout";
 import { Zone } from "@/model/ticket";
-import Booking from "../checkout";
+import Stadium from "@/components/stadium";
 
 const data = [
   {
@@ -261,7 +261,11 @@ export default function HomePage() {
             handlePointerOut={handlePointerOut}
           />
 
-          <Booking isOpen={open} items={items} onClose={() => setOpen(false)} />
+          <Checkout
+            isOpen={open}
+            items={items}
+            onClose={() => setOpen(false)}
+          />
 
           <div className="w-full mt-6 pt-6 border-t border-zinc-800/80">
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">

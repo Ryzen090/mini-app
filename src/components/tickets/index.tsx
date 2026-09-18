@@ -12,7 +12,6 @@ export interface TicketProps {
 }
 
 export const Ticket: React.FC<TicketProps> = ({ item }: TicketProps) => {
-  console.log(item);
   return (
     <div
       className="relative select-none transition-all duration-300"
