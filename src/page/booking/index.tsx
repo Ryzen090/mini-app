@@ -132,7 +132,7 @@ export default function Booking({ isOpen, onClose, items }: BookingProps) {
                   </span>
 
                   <span className="ml-1 text-xs text-zinc-500">
-                    ({(items.price * 4000).toLocaleString()} ៛)
+                    ({(items.price * 4000).toLocaleString()}៛)
                   </span>
                 </div>
               </div>
@@ -159,7 +159,7 @@ export default function Booking({ isOpen, onClose, items }: BookingProps) {
                 </div>
 
                 <div className="text-right text-sm font-medium text-emerald-400">
-                  {totalRiel.toLocaleString()} ៛
+                  {totalRiel.toLocaleString()}៛
                 </div>
               </div>
             </div>
