@@ -31,94 +31,57 @@ const zoneThemeColors: Record<string, { base: string; hover: string }> = {
   D2: { base: "#6a1b9a", hover: "#ab47bc" },
 };
 
-const DEFAULT_ZONES: Zone[] = [
-  {
-    id: "A1",
-    name: "VIP Main Stand (Lower)",
-    floor: 1,
-    capacity: 600,
-    available: 142,
-    price: 35,
-    status: TicketStatus.Available,
-  },
-  {
-    id: "A2",
-    name: "VIP Main Stand (Upper)",
-    floor: 2,
-    capacity: 800,
-    available: 310,
-    price: 28,
-    status: TicketStatus.Available,
-  },
-  {
-    id: "B1",
-    name: "East Grandstand (Lower)",
-    floor: 1,
-    capacity: 1000,
-    available: 420,
-    price: 20,
-    status: TicketStatus.Available,
-  },
-  {
-    id: "B2",
-    name: "East Grandstand (Upper)",
-    floor: 2,
-    capacity: 1200,
-    available: 650,
-    price: 15,
-    status: TicketStatus.Available,
-  },
-  {
-    id: "C1",
-    name: "South Goal Stand (Lower)",
-    floor: 1,
-    capacity: 850,
-    available: 210,
-    price: 12,
-    status: TicketStatus.Available,
-  },
-  {
-    id: "C2",
-    name: "South Goal Stand (Upper)",
-    floor: 2,
-    capacity: 950,
-    available: 390,
-    price: 10,
-    status: TicketStatus.Available,
-  },
-  {
-    id: "D1",
-    name: "North Goal Stand (Lower)",
-    floor: 1,
-    capacity: 850,
-    available: 0,
-    price: 12,
-    status: TicketStatus.Out,
-  },
-  {
-    id: "D2",
-    name: "North Goal Stand (Upper)",
-    floor: 2,
-    capacity: 950,
-    available: 340,
-    price: 10,
-    status: TicketStatus.Available,
-  },
-];
-
-export default function Stadium() {
-  const [tickets, setTickets] = React.useState<Zone[]>(DEFAULT_ZONES);
+export default function HomePage() {
+  const [tickets, setTickets] = React.useState<Zone[]>([]);
   const [hoveredSection, setHoveredSection] = React.useState<string | null>(
     null,
   );
   const [selectedSection, setSelectedSection] = React.useState<string | null>(
-    "A1",
+    null,
   );
+  const [showTicketModal, setShowTicketModal] = React.useState<boolean>(false);
   const [showCheckoutModal, setShowCheckoutModal] =
     React.useState<boolean>(false);
+  const [showAbaModal, setShowAbaModal] = React.useState<boolean>(false);
+  const [quantity, setQuantity] = React.useState<number>(1);
   const [bookingSuccess, setBookingSuccess] = React.useState<boolean>(false);
 
-  const effectiveTickets = tickets.length > 0 ? tickets : DEFAULT_ZONES;
+  React.useEffect(() => {
+    const fetchTickets = async () => {
+      // try {
+      //   const res = await GET_TICKET({ limit: 100 });
+      //   if (res?.data?.items) {
+      //     setTickets(res.data.items);
+      //   }
+      // } catch (err) {
+      //   console.error("Failed to fetch tickets:", err);
+      // }
+    };
+
+    fetchTickets();
+
+    const interval = setInterval(fetchTickets, 60 * 100);
+    return () => clearInterval(interval);
+  }, []);
+
+  React.useEffect(() => {
+    const handleOpenModal = () => {
+      setShowTicketModal(true);
+    };
+
+    window.addEventListener("open-ticket-modal", handleOpenModal);
+    return () => {
+      window.removeEventListener("open-ticket-modal", handleOpenModal);
+    };
+  }, []);
+
+  const activeZone = tickets.find((z) => z.id === selectedSection);
+
+  const isAvailable = activeZone
+    ? (activeZone.status === TicketStatus.Available ||
+        activeZone.status === 2) &&
+      activeZone.available > 0
+    : false;
 
   const handlePointerOver = (e: React.PointerEvent<SVGSVGElement>) => {
     const target = e.target as SVGElement;
@@ -139,7 +102,7 @@ export default function Stadium() {
     const target = e.target as SVGElement;
     const group = target.closest("g[id]") as SVGGElement | null;
     if (group && group.id) {
-      const zone = effectiveTickets.find((z) => z.id === group.id);
+      const zone = tickets.find((z) => z.id === group.id);
       if (zone) {
         setSelectedSection(zone.id);
         setBookingSuccess(false);
@@ -148,182 +111,47 @@ export default function Stadium() {
     }
   };
 
+  const handleBookTickets = () => {
+    if (!activeZone || !isAvailable) return;
+    setShowAbaModal(true);
+  };
+
   return (
-    <div className="min-h-screen bg-[#050507] text-slate-100 flex flex-col relative overflow-hidden pt-[86px]">
-      {/* Dynamic ambient stadium lights */}
+    <div className="min-h-screen bg-[#050507] text-slate-100 flex flex-col relative overflow-hidden pt-[96px] pb-12">
+      {/* Background ambient lighting effects */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[450px] bg-gradient-to-b from-[#ff3b30]/15 via-emerald-500/10 to-transparent blur-3xl pointer-events-none" />
       <div className="absolute top-1/4 -left-40 w-96 h-96 bg-red-600/10 rounded-full blur-[100px] pointer-events-none" />
       <div className="absolute top-1/3 -right-40 w-96 h-96 bg-emerald-500/10 rounded-full blur-[100px] pointer-events-none" />
 
-      {/* Main Content Area */}
-      <div className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 relative z-10 flex flex-col gap-6">
-        {/* Ultra-Modern Matchday Fixture Hero Banner */}
-        <div className="relative overflow-hidden rounded-3xl border border-zinc-800/90 bg-gradient-to-br from-zinc-950 via-zinc-900/95 to-black p-6 sm:p-8 shadow-[0_20px_60px_rgba(0,0,0,0.9)] backdrop-blur-2xl">
-          {/* Ambient Spotlight & Mesh Glows */}
-          <div className="absolute -top-32 -left-32 w-80 h-80 bg-[#ff3b30]/20 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute -bottom-32 -right-32 w-80 h-80 bg-blue-600/15 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-white/[0.03] to-transparent pointer-events-none" />
-
-          <div className="relative z-10 flex flex-col xl:flex-row items-center justify-between gap-6 sm:gap-8">
-            {/* Team Clash Section */}
-            <div className="relative z-10 flex flex-col xl:flex-row items-center justify-between gap-6 sm:gap-8">
-              {/* Team Clash Section */}
-              <div className="flex flex-col md:flex-row items-center gap-6 w-full xl:w-auto">
-                {/* Home & Away Club Badges & Names */}
-                <div className="flex items-center gap-4 sm:gap-6">
-                  {/* PKRSR Club Monogram Crest */}
-                  <div className="relative group">
-                    <div className="absolute -inset-1 rounded-2xl bg-gradient-to-r from-[#ff3b30] to-orange-600 opacity-60 blur-sm group-hover:opacity-100 transition duration-300" />
-                    <div className="relative flex h-16 w-16 sm:h-20 sm:w-20 items-center justify-center rounded-2xl bg-gradient-to-b from-zinc-900 to-black border border-zinc-700/80 p-2 shadow-2xl">
-                      <span className="text-xl sm:text-2xl font-black italic tracking-tighter text-[#ff3b30]">
-                        PKR
-                      </span>
-                      <span className="absolute -bottom-2 px-2 py-0.5 rounded-full bg-[#ff3b30] text-[9px] font-black uppercase tracking-wider text-white shadow">
-                        HOME
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* VS Badge */}
-                  <div className="flex flex-col items-center justify-center">
-                    <div className="px-3 py-1 rounded-full bg-zinc-950 border border-zinc-800 text-[11px] font-black italic text-zinc-300 tracking-wider shadow-inner">
-                      VS
-                    </div>
-                    <span className="text-[9px] font-mono uppercase text-zinc-500 mt-1">
-                      CPL R14
-                    </span>
-                  </div>
-
-                  <div className="relative group">
-                    <div className="absolute -inset-1 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 opacity-40 blur-sm group-hover:opacity-100 transition duration-300" />
-                    <div className="relative flex h-16 w-16 sm:h-20 sm:w-20 items-center justify-center rounded-2xl bg-gradient-to-b from-zinc-900 to-black border border-zinc-700/80 p-2 shadow-2xl">
-                      <span className="text-xl sm:text-2xl font-black italic tracking-tighter text-blue-400">
-                        VSK
-                      </span>
-                      <span className="absolute -bottom-2 px-2 py-0.5 rounded-full bg-blue-600 text-[9px] font-black uppercase tracking-wider text-white shadow">
-                        AWAY
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="text-center md:text-left">
-                  <div className="flex flex-wrap items-center justify-center md:justify-start gap-2 mb-1.5">
-                    <span className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-[#ff3b30]/20 text-[#ff3b30] border border-[#ff3b30]/30 shadow-[0_0_10px_rgba(255,59,48,0.2)]">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#ff3b30] animate-ping" />
-                      Live Matchday
-                    </span>
-                    <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono text-zinc-400 bg-zinc-900 border border-zinc-800">
-                      Cambodian Premier League
-                    </span>
-                  </div>
-
-                  <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-white uppercase italic">
-                    PKRSR FC{" "}
-                    <span className="text-zinc-500 font-normal not-italic mx-1">
-                      VS
-                    </span>{" "}
-                    VISAKHA FC
-                  </h1>
-
-                  <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 sm:gap-4 mt-2 text-xs text-zinc-400 font-medium">
-                    {/* Date Icon SVG */}
-                    <span className="flex items-center gap-1.5 bg-zinc-950/80 px-2.5 py-1 rounded-lg border border-zinc-800/80 text-zinc-300">
-                      <svg
-                        className="w-3.5 h-3.5 text-[#ff3b30]"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                        />
-                      </svg>
-                      Sun, 28 Sep 2026
-                    </span>
-
-                    {/* Kickoff/Time Icon SVG */}
-                    <span className="flex items-center gap-1.5 bg-zinc-950/80 px-2.5 py-1 rounded-lg border border-zinc-800/80 text-zinc-300">
-                      <svg
-                        className="w-3.5 h-3.5 text-[#ff3b30]"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                        />
-                      </svg>
-                      18:30 Kickoff
-                    </span>
-
-                    {/* Stadium/Location Icon SVG */}
-                    <span className="flex items-center gap-1.5 bg-zinc-950/80 px-2.5 py-1 rounded-lg border border-zinc-800/80 text-zinc-300">
-                      <svg
-                        className="w-3.5 h-3.5 text-[#ff3b30]"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                        />
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                        />
-                      </svg>
-                      Olympic National Stadium
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-4 w-full xl:w-auto justify-center xl:justify-end border-t xl:border-t-0 pt-4 xl:pt-0 border-zinc-800/80">
-              <button
-                type="button"
-                onClick={() => {
-                  setSelectedSection("A1");
-                  setShowCheckoutModal(true);
-                }}
-                className="px-6 py-4 rounded-2xl bg-gradient-to-r from-[#ff3b30] to-[#e03126] hover:from-[#e03126] hover:to-[#c52b21] text-white font-black text-xs uppercase tracking-wider transition-all duration-200 active:scale-95 shadow-[0_0_25px_rgba(255,59,48,0.45)] hover:shadow-[0_0_35px_rgba(255,59,48,0.6)] cursor-pointer flex items-center gap-2"
-              >
-                <span>Book Tickets</span>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-gradient-to-b from-zinc-900/95 via-zinc-950/95 to-black backdrop-blur-2xl rounded-3xl border border-zinc-800/90 p-4 sm:p-8 flex flex-col items-center justify-center shadow-[0_25px_80px_rgba(0,0,0,0.9)] relative overflow-hidden">
+      <div className="flex-1 max-w-[1440px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-4 relative z-10 flex flex-col gap-6">
+        <div className="w-full bg-gradient-to-b from-zinc-900/95 via-zinc-950/95 to-black backdrop-blur-2xl rounded-3xl border border-zinc-800/90 p-4 sm:p-8 lg:p-10 flex flex-col items-center justify-center shadow-[0_25px_80px_rgba(0,0,0,0.9)] relative overflow-hidden">
           <div className="absolute -top-32 -left-32 w-96 h-96 bg-[#ff3b30]/15 rounded-full blur-[100px] pointer-events-none" />
           <div className="absolute -bottom-32 -right-32 w-96 h-96 bg-cyan-500/10 rounded-full blur-[100px] pointer-events-none" />
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-emerald-500/[0.04] via-transparent to-transparent pointer-events-none" />
+
+          <div className="w-full flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-zinc-800">
+            <div>
+              <h2 className="text-lg sm:text-2xl font-extrabold text-white uppercase tracking-wider">
+                Stadium Seating Map
+              </h2>
+              <p className="text-xs sm:text-sm text-zinc-400">
+                Click a stand to select your category and seats
+              </p>
+            </div>
+            <div className="flex items-center gap-2 text-xs font-mono bg-zinc-950 px-3.5 py-2 rounded-xl border border-zinc-800 text-zinc-300">
+              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
+              Live Availability
+            </div>
+          </div>
 
           <svg
             xmlns="https://www.w3.org/2000/svg"
             version="1.1"
             id="StDio_x5F_mapundefined"
-            x="0"
-            y="0"
-            viewBox="0 0 521 417"
-            className="css-ducv57"
+            viewBox="92 92 338 280"
+            className="css-ducv57 drop-shadow-2xl"
             style={{
-              maxWidth: "920px",
+              maxWidth: "960px",
               width: "100%",
               height: "auto",
             }}
@@ -1957,8 +1785,103 @@ export default function Stadium() {
               </g>
             </g>
           </svg>
+
+          {/* Stand Categories Legend */}
+          <div className="w-full mt-6 pt-6 border-t border-zinc-800/80">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              {[
+                {
+                  id: "A",
+                  name: "VIP Main Stand",
+                  sub: "A1 (Lower) / A2 (Upper)",
+                  color: "#e53935",
+                },
+                {
+                  id: "B",
+                  name: "East Grandstand",
+                  sub: "B1 (Lower) / B2 (Upper)",
+                  color: "#2e7d32",
+                },
+                {
+                  id: "C",
+                  name: "South Goal Stand",
+                  sub: "C1 (Lower) / C2 (Upper)",
+                  color: "#1e88e5",
+                },
+                {
+                  id: "D",
+                  name: "North Goal Stand",
+                  sub: "D1 (Lower) / D2 (Upper)",
+                  color: "#8e24aa",
+                },
+              ].map((item) => (
+                <div
+                  key={item.id}
+                  className="flex items-center gap-3 bg-zinc-950/60 rounded-xl p-3 border border-zinc-800/60"
+                >
+                  <div
+                    className="w-4 h-4 rounded-md shadow-sm shrink-0"
+                    style={{ backgroundColor: item.color }}
+                  />
+                  <div className="min-w-0">
+                    <p className="text-xs font-bold text-white truncate">
+                      {item.name}
+                    </p>
+                    <p className="text-[10px] text-zinc-400 truncate">
+                      {item.sub}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
+
+      {/* Checkout Modal */}
+      {/* <CheckoutModal
+        isOpen={showCheckoutModal}
+        onClose={() => setShowCheckoutModal(false)}
+        zone={activeZone || null}
+        quantity={quantity}
+        setQuantity={setQuantity}
+        bookingSuccess={bookingSuccess}
+        setBookingSuccess={setBookingSuccess}
+        onPayNow={handleBookTickets}
+        isAvailable={isAvailable}
+      />
+
+      {activeZone && (
+        <TicketModal
+          isOpen={showTicketModal}
+          onClose={() => setShowTicketModal(false)}
+          zone={activeZone}
+          quantity={quantity}
+        />
+      )}
+      {!activeZone && tickets.length > 0 && (
+        <TicketModal
+          isOpen={showTicketModal}
+          onClose={() => setShowTicketModal(false)}
+          zone={tickets[0]}
+          quantity={quantity}
+        />
+      )}
+
+      {activeZone && (
+        <AbaPaymentModal
+          isOpen={showAbaModal}
+          onClose={() => setShowAbaModal(false)}
+          onPaymentSuccess={() => {
+            setShowAbaModal(false);
+            setBookingSuccess(true);
+          }}
+          amountUsd={activeZone.price * quantity}
+          zoneId={activeZone.id}
+          zoneName={activeZone.name}
+          quantity={quantity}
+        />
+      )} */}
     </div>
   );
 }
