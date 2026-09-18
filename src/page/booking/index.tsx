@@ -33,6 +33,14 @@ export default function Booking({ isOpen, onClose, items }: BookingProps) {
     setQuantity((current) => Math.min(maxQuantity, current + 1));
   };
 
+  const onCheckout = () => {
+    console.log({
+      item: items.id,
+      quantity,
+      price: items.price * quantity,
+    });
+  };
+
   return (
     <div
       className="fixed inset-0 z-[100] flex items-end justify-center bg-black/80 p-0 backdrop-blur-md sm:items-center sm:p-4"
@@ -44,14 +52,9 @@ export default function Booking({ isOpen, onClose, items }: BookingProps) {
       >
         <div className="pointer-events-none absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-red-500/10 to-transparent" />
 
-        {/* Header */}
         <div className="relative flex items-center justify-between border-b border-zinc-800/80 px-5 py-4">
           <div>
-            <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-zinc-500">
-              Ticket Selection
-            </p>
-
-            <h2 className="mt-1 text-lg font-semibold text-white">
+            <h2 className="mt-1 text-lg font-semibold text-white uppercase">
               Select your tickets
             </h2>
           </div>
@@ -86,7 +89,6 @@ export default function Booking({ isOpen, onClose, items }: BookingProps) {
             </div>
 
             <div className="flex items-center justify-between rounded-xl border border-zinc-800 bg-zinc-900 p-2">
-              {/* Minus */}
               <button
                 type="button"
                 onClick={decreaseQuantity}
@@ -118,13 +120,11 @@ export default function Booking({ isOpen, onClose, items }: BookingProps) {
           </div>
 
           <div className="relative w-full overflow-hidden rounded-3xl bg-zinc-950 p-6 shadow-2xl">
-            <div className="mb-5 text-sm font-medium text-zinc-200">
-              Order Summary
-            </div>
+            <div className="mb-5 text-sm font-medium text-zinc-200">Order</div>
 
             <div className="space-y-3.5">
               <div className="flex items-center justify-between text-sm">
-                <span className="text-zinc-400">Price per Ticket</span>
+                <span className="text-zinc-400">Price</span>
 
                 <div className="text-right font-mono">
                   <span className="font-semibold text-zinc-100">
@@ -167,6 +167,7 @@ export default function Booking({ isOpen, onClose, items }: BookingProps) {
 
           <button
             type="button"
+            onClick={onCheckout}
             className="group flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-white font-semibold text-black transition hover:bg-zinc-200 active:scale-[0.99]"
           >
             Checkout
