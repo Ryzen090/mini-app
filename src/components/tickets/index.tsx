@@ -8,7 +8,7 @@ export const DEFAULT_CLUB_LOGO =
   "https://pkrsr-public-production.s3.ap-southeast-1.amazonaws.com/attachments/7PN6TGVS-1752048232.png";
 
 export interface TicketProps {
-  item: Tickets;
+  item: Tickets | any;
 }
 
 export const Ticket: React.FC<TicketProps> = ({ item }: TicketProps) => {
@@ -89,7 +89,7 @@ export const Ticket: React.FC<TicketProps> = ({ item }: TicketProps) => {
                 តម្លៃសំបុត្រ
               </span>
               <div className="rounded-lg border border-slate-200 bg-white px-1.5 py-1 text-xs font-bold tracking-wide text-slate-900 shadow-sm sm:text-sm">
-                {(item?.price * 4000).toLocaleString()}
+                {((item?.price ?? 0) * 4000).toLocaleString()}
               </div>
             </div>
 
@@ -129,11 +129,9 @@ export const Ticket: React.FC<TicketProps> = ({ item }: TicketProps) => {
           <div className="my-auto grid grid-cols-12 items-center gap-2 py-2 sm:gap-3">
             <div className="col-span-5 flex items-center gap-2 sm:col-span-4">
               <div className="group relative shrink-0 select-none rounded-xl border border-slate-200 bg-white p-1 shadow-md">
-                <QRCode _id={item._id} />
+                <QRCode _id={item?._id} />
               </div>
             </div>
-
-            <div className="col-span-7 space-y-1 text-left sm:col-span-4"></div>
 
             <div className="hidden flex-col justify-center space-y-2 pl-2 sm:col-span-4 sm:flex pb-4">
               <div>
@@ -141,7 +139,7 @@ export const Ticket: React.FC<TicketProps> = ({ item }: TicketProps) => {
                   PRICE TICKET
                 </span>
                 <div className="rounded-xl bg-white px-2 py-1 text-center text-xs font-black text-slate-950 shadow-md lg:text-sm">
-                  {(item?.price * 4000).toLocaleString()}
+                  {((item?.price ?? 0) * 4000).toLocaleString()}
                 </div>
               </div>
 
@@ -186,7 +184,7 @@ export const Ticket: React.FC<TicketProps> = ({ item }: TicketProps) => {
                 PRICE
               </span>
               <div className="rounded-lg bg-white px-1.5 py-1 text-xs font-black tracking-wide text-slate-950 shadow-sm sm:text-sm">
-                ${item.price.toFixed(2)}
+                ${(item?.price ?? 0).toFixed(2)}
               </div>
             </div>
 
