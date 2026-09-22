@@ -10,7 +10,6 @@ type IStatus = {
 };
 
 export type PaymentItem = {
-  amount: number;
   items: Item[];
 };
 

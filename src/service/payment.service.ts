@@ -12,7 +12,6 @@ export async function createPayment(
       Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({
-      amount: item.amount,
       items: [
         {
           _id: item.items[0]._id,

@@ -76,7 +76,7 @@ export default function BasketPage() {
           <div className="flex flex-col items-center justify-center py-16 text-center">
             <div className="h-10 w-10 animate-spin rounded-full border-3 border-[#ff3b30] border-t-transparent" />
             <p className="mt-4 text-sm font-semibold text-zinc-400">
-              Loading your tickets...
+              Loading tickets...
             </p>
           </div>
         ) : orders.length === 0 ? (
@@ -130,41 +130,29 @@ export default function BasketPage() {
 
                       <span className="rounded-lg border border-zinc-800 bg-zinc-900 px-2.5 py-1 font-bold text-zinc-300">
                         Qty:{" "}
-                        <span className="font-extrabold text-white">
+                        <span className="font-extrabold text-white ">
                           {item.quantity}
                         </span>
                       </span>
-
-                      {item.orderIds && item.orderIds.length > 0 && (
-                        <span className="hidden font-mono text-[11px] text-zinc-400 sm:inline-block">
-                          ID: {item.orderIds[0]}
-                          {item.orderIds.length > 1 && (
-                            <span className="text-zinc-500">
-                              (+{item.orderIds.length - 1} more)
-                            </span>
-                          )}
-                        </span>
-                      )}
                     </div>
 
                     <div className="flex items-center gap-3">
                       <div className="text-right">
-                        <span className="text-sm font-black text-white sm:text-base">
+                        <span className="text-sm  font-bold font-mono text-white sm:text-base">
                           ${itemTotal.toFixed(2)}
                         </span>
-                        <span className="ml-1 text-[11px] font-bold text-zinc-400">
+                        <span className="ml-1 text-[11px] font-mono text-zinc-400">
                           ({(itemTotal * 4000).toLocaleString()} ៛)
                         </span>
                       </div>
                     </div>
                   </div>
                   <div className="py-1">
-                    {(item.orderCount ?? 0) > 1 ? (
+                    {(item.quantity ?? 0) > 1 ? (
                       <div className="relative w-full">
                         <Swiper spaceBetween={20} slidesPerView={1.1}>
                           {Array.from({
-                            length:
-                              item.orderCount || item.orderIds?.length || 1,
+                            length: item.quantity || item.orderIds?.length || 1,
                           }).map((_, oIdx) => {
                             const singleTicket = {
                               ...item,

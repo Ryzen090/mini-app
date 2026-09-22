@@ -64,24 +64,23 @@ export default function HomePage() {
     }
 
     setItems(zone);
-    setOpen(true);
   };
 
   return (
-    <div className="min-h-screen bg-[#050507] text-slate-100 flex flex-col relative overflow-hidden pt-[96px] pb-12">
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[450px] bg-gradient-to-b from-[#ff3b30]/15 via-emerald-500/10 to-transparent blur-3xl pointer-events-none" />
+    <div className="min-h-screen bg-[#050507] text-slate-100 flex flex-col relative overflow-hidden pt-24 pb-12">
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-112.5 bg-linear-to-b from-[#ff3b30]/15 via-emerald-500/10 to-transparent blur-3xl pointer-events-none" />
 
       <div className="absolute top-1/4 -left-40 w-96 h-96 bg-red-600/10 rounded-full blur-[100px] pointer-events-none" />
 
       <div className="absolute top-1/3 -right-40 w-96 h-96 bg-emerald-500/10 rounded-full blur-[100px] pointer-events-none" />
 
-      <div className="flex-1 max-w-[1440px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-4 relative z-10 flex flex-col gap-6">
-        <div className="w-full bg-gradient-to-b from-zinc-900/95 via-zinc-950/95 to-black backdrop-blur-2xl rounded-3xl border border-zinc-800/90 p-4 sm:p-8 lg:p-10 flex flex-col items-center justify-center shadow-[0_25px_80px_rgba(0,0,0,0.9)] relative overflow-hidden">
+      <div className="flex-1 max-w-360 w-full mx-auto px-4 sm:px-6 lg:px-8 py-4 relative z-10 flex flex-col gap-6">
+        <div className="w-full bg-linear-to-b from-zinc-900/95 via-zinc-950/95 to-black backdrop-blur-2xl rounded-3xl border border-zinc-800/90 p-4 sm:p-8 lg:p-10 flex flex-col items-center justify-center shadow-[0_25px_80px_rgba(0,0,0,0.9)] relative overflow-hidden">
           <div className="absolute -top-32 -left-32 w-96 h-96 bg-[#ff3b30]/15 rounded-full blur-[100px] pointer-events-none" />
 
           <div className="absolute -bottom-32 -right-32 w-96 h-96 bg-cyan-500/10 rounded-full blur-[100px] pointer-events-none" />
 
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-emerald-500/[0.04] via-transparent to-transparent pointer-events-none" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(ellipse_at_center,var(--tw-gradient-stops))] from-emerald-500/4 via-transparent to-transparent pointer-events-none" />
 
           <div className="w-full mb-6">
             <div className="flex flex-col items-center">

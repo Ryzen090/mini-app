@@ -27,7 +27,6 @@ export default function Checkout({ isOpen, onClose, items }: CheckoutProps) {
     if (!items) return;
 
     const value: PaymentItem = {
-      amount: items.price * quantity,
       items: [
         {
           _id: items._id || "",

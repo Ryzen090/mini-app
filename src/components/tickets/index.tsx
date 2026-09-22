@@ -85,26 +85,29 @@ export const Ticket: React.FC<TicketProps> = ({ item }: TicketProps) => {
 
           <div className="my-auto w-full space-y-2 px-1">
             <div>
-              <span className="mb-1 block text-[8px] font-semibold leading-tight text-red-200/90 sm:text-[9px]">
-                តម្លៃសំបុត្រ
+              <span className="mb-0.5 block font-mono text-[7.5px] font-bold tracking-[0.2em] text-red-200/90 uppercase sm:text-[8.5px]">
+                [ តម្លៃ / PRICE ]
               </span>
-              <div className="rounded-lg border border-slate-200 bg-white px-1.5 py-1 text-xs font-bold tracking-wide text-slate-900 shadow-sm sm:text-sm">
-                {((item?.price ?? 0) * 4000).toLocaleString()}
+              <div className="rounded border border-red-200/30 bg-white/95 px-1 py-1 font-mono text-xs font-black tracking-tight text-slate-900 shadow-sm sm:text-sm">
+                {((item?.price ?? 0) * 4000).toLocaleString()}{" "}
+                <span className="text-[9px] font-normal text-slate-500">
+                  KHR
+                </span>
               </div>
             </div>
 
             <div>
-              <span className="mb-1 block text-[8px] font-semibold leading-tight text-red-200/90 sm:text-[9px]">
-                ប្រភេទសំបុត្រ
+              <span className="mb-0.5 block font-mono text-[7.5px] font-bold tracking-[0.2em] text-red-200/90 uppercase sm:text-[8.5px]">
+                [ ប្រភេទ / TICKET ]
               </span>
-              <div className="rounded-lg border border-slate-200 bg-white px-1.5 py-1 text-xs font-black tracking-wider text-slate-900 uppercase shadow-sm sm:text-sm">
+              <div className="rounded border border-red-200/30 bg-white/95 px-1 py-1 font-mono text-xs font-black tracking-wider text-slate-900 uppercase shadow-sm sm:text-sm">
                 {item?.name}
               </div>
             </div>
           </div>
 
           <div className="w-full pb-1 text-center">
-            <span className="block text-[7px] font-bold tracking-wider text-red-200/80 uppercase sm:text-[8px]">
+            <span className="block font-mono text-[7px] font-bold tracking-[0.25em] text-red-300/80 uppercase sm:text-[8px]">
               WWW.CPL-CAMBODIA.COM
             </span>
           </div>
@@ -119,50 +122,59 @@ export const Ticket: React.FC<TicketProps> = ({ item }: TicketProps) => {
                 textShadow: "0 2px 8px rgba(0,0,0,0.7)",
               }}
             >
-              ជម្រើសជើងឯកខេមបូឌានព្រីមៀរលីក ឆ្នាំ២០២៦/២៧
+              ជម្រើសជើងឯកខេមបូឌានព្រីមៀរលីក
             </h2>
-            <p className="mt-0.5 text-[9px] font-extrabold tracking-widest text-red-200/95 uppercase drop-shadow sm:text-[11px]">
-              CAMBODIAN PREMIER LEAGUE 2026/27
+            <p className="mt-0.5 font-mono text-[8.5px] font-extrabold tracking-[0.25em] text-red-200 uppercase drop-shadow sm:text-[10px]">
+              CAMBODIAN PREMIER LEAGUE
             </p>
           </div>
 
-          <div className="my-auto grid grid-cols-12 items-center gap-2 py-2 sm:gap-3">
-            <div className="col-span-5 flex items-center gap-2 sm:col-span-4">
-              <div className="group relative shrink-0 select-none rounded-xl border border-slate-200 bg-white p-1 shadow-md">
-                <QRCode _id={item?._id} />
+          <div className="my-auto flex items-center justify-between gap-3 py-1">
+            <div className="flex flex-1 flex-col justify-between space-y-1 text-left font-mono">
+              <div>
+                <span className="text-[6.5px] text-red-300 uppercase">
+                  STADIUM / កីឡដ្ឋាន
+                </span>
+                <p className="text-xs font-black tracking-wide text-white uppercase">
+                  {item?.stadium ?? "OLYMPIC NATIONAL STADIUM"}
+                </p>
+              </div>
+              <div className="grid grid-cols-2 gap-2 pt-1 border-t border-red-400/20">
+                <div>
+                  <span className="text-[6.5px] text-red-300 uppercase">
+                    DATE / កាលបរិច្ឆេទ
+                  </span>
+                  <p className="text-[13px] font-black">
+                    {item?.date ?? "24 OCT 2026"}
+                  </p>
+                </div>
+                <div>
+                  <span className="text-[6.5px] text-red-300 uppercase">
+                    SEAT / កៅអី
+                  </span>
+                  <p className="text-[13px] font-black uppercase">
+                    Zone {item?.name}
+                  </p>
+                </div>
               </div>
             </div>
 
-            <div className="hidden flex-col justify-center space-y-2 pl-2 sm:col-span-4 sm:flex pb-4">
-              <div>
-                <span className="mb-1 block text-center text-[8px] font-semibold leading-none text-red-200/90 lg:text-[9px]">
-                  PRICE TICKET
-                </span>
-                <div className="rounded-xl bg-white px-2 py-1 text-center text-xs font-black text-slate-950 shadow-md lg:text-sm">
-                  {((item?.price ?? 0) * 4000).toLocaleString()}
-                </div>
-              </div>
-
-              <div>
-                <span className="mb-1 block text-center text-[8px] font-semibold leading-none text-red-200/90 lg:text-[9px]">
-                  CATEGORY
-                </span>
-                <div className="rounded-xl border border-slate-200 bg-white px-2 py-1 text-center text-xs font-black text-slate-950 uppercase shadow-md lg:text-sm">
-                  {item?.name}
-                </div>
-              </div>
+            <div className="rounded-lg border-2 border-white bg-white p-1 shadow-md">
+              <QRCode _id={item?._id} />
             </div>
           </div>
 
-          {/* Bottom Footer Ribbon Strip */}
-          <div className="-mx-3 -mb-3 flex items-center justify-between rounded-b-xl bg-[#b91c1c] px-3 py-1 text-[7px] font-bold tracking-wider text-white uppercase sm:-mx-5 sm:-mb-5 sm:text-[8px]">
-            <span>CPL SEASON 2026/27</span>
-            <span className="hidden sm:inline">WWW.CPL-CAMBODIA.COM</span>
-            <span>NO. CPL-2026-884920</span>
+          <div className="-mx-3 -mb-3 flex items-center justify-between rounded-b-xl bg-[#b91c1c] px-3 py-1 font-mono text-[7px] font-bold text-white uppercase sm:-mx-5 sm:-mb-5 sm:text-[8px]">
+            <span>DOCUMENTO D'IDENTITÀ RICHIESTO</span>
+            <span>
+              ID: #
+              {String(item?._id ?? "CPL-001")
+                .slice(-6)
+                .toUpperCase()}
+            </span>
           </div>
         </div>
 
-        {/* SECTION 3: RIGHT TEAR-OFF STUB */}
         <div className="relative z-10 flex w-[26%] flex-col items-center justify-between border-l-2 border-dashed border-red-400/40 bg-black/20 p-3 text-center sm:w-[22%] sm:p-4">
           <div className="absolute -top-3.5 -left-3.5 z-20 h-7 w-7 rounded-full bg-[#0b0b0f] shadow-[inset_0_2px_4px_rgba(0,0,0,0.6)]" />
           <div className="absolute -bottom-3.5 -left-3.5 z-20 h-7 w-7 rounded-full bg-[#0b0b0f] shadow-[inset_0_-2px_4px_rgba(0,0,0,0.6)]" />
@@ -180,26 +192,26 @@ export const Ticket: React.FC<TicketProps> = ({ item }: TicketProps) => {
 
           <div className="my-auto w-full space-y-2 px-1">
             <div>
-              <span className="mb-1 block text-[8px] font-semibold leading-tight text-red-200/90 sm:text-[9px]">
-                PRICE
+              <span className="mb-0.5 block font-mono text-[7.5px] font-bold tracking-[0.2em] text-red-200/90 uppercase sm:text-[8.5px]">
+                [ PRICE ]
               </span>
-              <div className="rounded-lg bg-white px-1.5 py-1 text-xs font-black tracking-wide text-slate-950 shadow-sm sm:text-sm">
+              <div className="rounded border border-red-200/30 bg-white/95 px-1 py-1 font-mono text-xs font-black tracking-tight text-slate-950 shadow-sm sm:text-sm">
                 ${(item?.price ?? 0).toFixed(2)}
               </div>
             </div>
 
             <div>
-              <span className="mb-1 block text-[8px] font-semibold leading-tight text-red-200/90 sm:text-[9px]">
-                SEAT
+              <span className="mb-0.5 block font-mono text-[7.5px] font-bold tracking-[0.2em] text-red-200/90 uppercase sm:text-[8.5px]">
+                [ SEAT / CAT ]
               </span>
-              <div className="rounded-lg border border-slate-200 bg-white px-1.5 py-1 text-xs font-black tracking-wider text-slate-900 uppercase shadow-sm sm:text-sm">
+              <div className="rounded border border-red-200/30 bg-white/95 px-1 py-1 font-mono text-xs font-black tracking-wider text-slate-900 uppercase shadow-sm sm:text-sm">
                 {item?.name}
               </div>
             </div>
           </div>
 
           <div className="w-full pb-1 text-center">
-            <span className="block text-[7px] font-extrabold tracking-wider text-red-200/90 uppercase sm:text-[8px]">
+            <span className="block font-mono text-[7px] font-bold tracking-[0.25em] text-red-300/90 uppercase sm:text-[8px]">
               CPL 2026/27
             </span>
           </div>
