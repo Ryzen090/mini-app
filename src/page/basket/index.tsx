@@ -160,7 +160,7 @@ export default function BasketPage() {
                   </div>
                   <div className="py-1">
                     {(item.orderCount ?? 0) > 1 ? (
-                      <div className="relative w-full pb-8">
+                      <div className="relative w-full">
                         <Swiper spaceBetween={20} slidesPerView={1.1}>
                           {Array.from({
                             length:
@@ -185,9 +185,7 @@ export default function BasketPage() {
 
                             return (
                               <SwiperSlide key={item.orderIds?.[oIdx] || oIdx}>
-                                <div className="px-2 sm:px-8">
-                                  <Ticket item={singleTicket} />
-                                </div>
+                                <Ticket item={singleTicket} />
                               </SwiperSlide>
                             );
                           })}
