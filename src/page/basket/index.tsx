@@ -6,28 +6,37 @@ import { Orders } from "@/model/order";
 import { useEffect, useState } from "react";
 import { getOrders } from "@/service/order.service";
 
+import { Swiper, SwiperSlide } from "swiper/react";
+
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
+
 export default function BasketPage() {
   const [orders, setOrders] = useState<Orders[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const loadOrders = async () => {
-    try {
-      setLoading(true);
-      const data = await getOrders();
-      if (Array.isArray(data) && data.length > 0) {
-        setOrders(data);
-      } else {
-        setOrders(data);
-      }
-    } catch (error) {
-      setOrders([]);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
-    loadOrders();
+    let isMounted = true;
+    getOrders()
+      .then((data) => {
+        if (!isMounted) return;
+        if (Array.isArray(data) && data.length > 0) {
+          setOrders(data);
+        } else {
+          setOrders(data || []);
+        }
+      })
+      .catch(() => {
+        if (isMounted) setOrders([]);
+      })
+      .finally(() => {
+        if (isMounted) setLoading(false);
+      });
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   return (
@@ -122,7 +131,7 @@ export default function BasketPage() {
                       <span className="rounded-lg border border-zinc-800 bg-zinc-900 px-2.5 py-1 font-bold text-zinc-300">
                         Qty:{" "}
                         <span className="font-extrabold text-white">
-                          {item.quantity} {item.quantity > 1 ? "Seats" : "Seat"}
+                          {item.quantity}
                         </span>
                       </span>
 
@@ -149,8 +158,46 @@ export default function BasketPage() {
                       </div>
                     </div>
                   </div>
-                  <div className="overflow-x-auto py-1">
-                    <Ticket item={item} />
+                  <div className="py-1">
+                    {(item.orderCount ?? 0) > 1 ? (
+                      <div className="relative w-full pb-8">
+                        <Swiper spaceBetween={20} slidesPerView={1.1}>
+                          {Array.from({
+                            length:
+                              item.orderCount || item.orderIds?.length || 1,
+                          }).map((_, oIdx) => {
+                            const singleTicket = {
+                              ...item,
+                              _id:
+                                item.tranIds?.[oIdx] ||
+                                item.orderIds?.[oIdx] ||
+                                item._id,
+                              orderIds: item.orderIds?.[oIdx]
+                                ? [item.orderIds[oIdx]]
+                                : item.orderIds,
+                              tranIds: item.tranIds?.[oIdx]
+                                ? [item.tranIds[oIdx]]
+                                : item.tranIds,
+                              quantity: 1,
+                              totalAmount: item.price,
+                              orderCount: 1,
+                            };
+
+                            return (
+                              <SwiperSlide key={item.orderIds?.[oIdx] || oIdx}>
+                                <div className="px-2 sm:px-8">
+                                  <Ticket item={singleTicket} />
+                                </div>
+                              </SwiperSlide>
+                            );
+                          })}
+                        </Swiper>
+                      </div>
+                    ) : (
+                      <div className="overflow-x-auto">
+                        <Ticket item={item} />
+                      </div>
+                    )}
                   </div>
                 </div>
               );
