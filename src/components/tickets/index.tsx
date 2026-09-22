@@ -1,6 +1,6 @@
 import React from "react";
-import { Zone } from "@/model/ticket";
 import { QRCode } from "..";
+import { Tickets } from "@/model/ticket";
 
 export const DEFAULT_CPL_LOGO =
   "https://pkrsr-public-production.s3.ap-southeast-1.amazonaws.com/attachments/TZ5D6VKK-1720763721.png";
@@ -8,7 +8,7 @@ export const DEFAULT_CLUB_LOGO =
   "https://pkrsr-public-production.s3.ap-southeast-1.amazonaws.com/attachments/7PN6TGVS-1752048232.png";
 
 export interface TicketProps {
-  item: Zone;
+  item: Tickets;
 }
 
 export const Ticket: React.FC<TicketProps> = ({ item }: TicketProps) => {
@@ -98,7 +98,7 @@ export const Ticket: React.FC<TicketProps> = ({ item }: TicketProps) => {
                 ប្រភេទសំបុត្រ
               </span>
               <div className="rounded-lg border border-slate-200 bg-white px-1.5 py-1 text-xs font-black tracking-wider text-slate-900 uppercase shadow-sm sm:text-sm">
-                {item?.id}
+                {item?.name}
               </div>
             </div>
           </div>
@@ -150,7 +150,7 @@ export const Ticket: React.FC<TicketProps> = ({ item }: TicketProps) => {
                   CATEGORY
                 </span>
                 <div className="rounded-xl border border-slate-200 bg-white px-2 py-1 text-center text-xs font-black text-slate-950 uppercase shadow-md lg:text-sm">
-                  {item?.id}
+                  {item?.name}
                 </div>
               </div>
             </div>
@@ -195,7 +195,7 @@ export const Ticket: React.FC<TicketProps> = ({ item }: TicketProps) => {
                 SEAT
               </span>
               <div className="rounded-lg border border-slate-200 bg-white px-1.5 py-1 text-xs font-black tracking-wider text-slate-900 uppercase shadow-sm sm:text-sm">
-                {item?.id}
+                {item?.name}
               </div>
             </div>
           </div>

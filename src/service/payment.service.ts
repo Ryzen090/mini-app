@@ -1,61 +1,56 @@
-import {
-  PaymentResponse,
-  CreatePaymentData,
-  PaymentCheckResponse,
-} from "@/model/payment";
-import { CheckoutData } from "@/model/ticket";
+import { PaymentItem } from "@/model/payment";
 
 export async function createPayment(
-  item: CheckoutData,
-  user: CreatePaymentData,
+  item: PaymentItem,
 ): Promise<PaymentResponse> {
+  const token = localStorage.getItem("token");
+
   const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/payment`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({
-      tran_id: `TRX-${Date.now()}`,
-      amount: item.price.toFixed(2),
-      firstname: user.firstname,
-      lastname: user.lastname,
-      email: user.email,
-      phone: user.phone,
+      amount: item.amount,
+      items: [
+        {
+          _id: item.items[0]._id,
+          name: item.items[0].name,
+          quantity: item.items[0].quantity,
+          price: item.items[0].price,
+        },
+      ],
     }),
   });
 
   const data: PaymentResponse = await response.json();
 
-  if (!response.ok) {
-    throw new Error(data?.description || "Payment request failed");
-  }
-
   return data;
 }
 
-export async function checkPayment(
-  tranId: string,
-): Promise<PaymentCheckResponse> {
+export async function checkPayment(tranId: string): Promise<any> {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    throw new Error("Please login first");
+  }
+
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/payment/check`,
     {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
-        _id: tranId,
+        tran_id: tranId,
       }),
     },
   );
 
-  const result: PaymentCheckResponse = await response.json();
-
-  if (!response.ok) {
-    throw new Error(
-      result?.status?.message || "Unable to check payment status",
-    );
-  }
+  const result: any = await response.json();
 
   return result;
 }

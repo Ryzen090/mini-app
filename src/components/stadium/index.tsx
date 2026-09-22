@@ -1,11 +1,12 @@
 "use client";
 
 import React from "react";
-import { SETS, THEME_COLORS, TicketStatus, Zone } from "@/model/ticket";
+import { Tickets } from "@/model/ticket";
+import { SETS, STATUS, THEME_COLORS } from "@/model/enum";
 
 type StadiumProps = {
   hoveredSection?: string | null;
-  tickets: Zone[];
+  tickets: Tickets[];
 
   handleClick: (event: React.MouseEvent<SVGSVGElement>) => void;
   handlePointerOut: (event: React.PointerEvent<SVGSVGElement>) => void;
@@ -19,26 +20,26 @@ export default function Stadium({
   handlePointerOut,
   handleClick,
 }: StadiumProps) {
-  const sectionStyles = SETS.map((sectionId) => {
-    const theme = THEME_COLORS[sectionId] ?? {
+  const sectionStyles = SETS.map((select) => {
+    const theme = THEME_COLORS[select] ?? {
       base: "#64748b",
       hover: "#94a3b8",
     };
 
-    const zone = tickets.find((ticket) => ticket.id === sectionId);
+    const ticket = tickets.find((ticket) => ticket._id === select);
 
-    const isOut = zone?.status === TicketStatus.Out;
+    const InActive = ticket?.status === STATUS.InActive;
 
-    if (isOut) {
+    if (InActive) {
       return `
-        #${sectionId} .shape {
+        #${select} .shape {
           fill: #3f3f46;
           opacity: 0.45;
           cursor: not-allowed;
         }
 
-        svg[data-hovered="${sectionId}"] #${sectionId} .shape,
-        svg[data-selected="${sectionId}"] #${sectionId} .shape {
+        svg[data-hovered="${select}"] #${select} .shape,
+        svg[data-selected="${select}"] #${select} .shape {
           fill: #52525b;
           opacity: 0.85;
           filter: drop-shadow(
@@ -49,11 +50,11 @@ export default function Stadium({
     }
 
     return `
-      #${sectionId} .shape {
+      #${select} .shape {
         fill: ${theme.base};
       }
 
-      svg[data-hovered="${sectionId}"] #${sectionId} .shape {
+      svg[data-hovered="${select}"] #${select} .shape {
         fill: ${theme.hover};
         opacity: 1;
         filter: drop-shadow(
@@ -61,7 +62,7 @@ export default function Stadium({
         );
       }
 
-      svg[data-selected="${sectionId}"] #${sectionId} .shape {
+      svg[data-selected="${select}"] #${select} .shape {
         fill: ${theme.hover};
         opacity: 1;
         filter: drop-shadow(

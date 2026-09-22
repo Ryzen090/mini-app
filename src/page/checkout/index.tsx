@@ -3,32 +3,39 @@
 import React from "react";
 import Payment from "../payment";
 import { Ticket } from "@/components";
-import { CheckoutData, Zone } from "@/model/ticket";
+import { Tickets } from "@/model/ticket";
+import { PaymentItem } from "@/model/payment";
 
 type CheckoutProps = {
   isOpen: boolean;
-  items: Zone | null;
+  items: Tickets | null;
   onClose: () => void;
 };
 
 export default function Checkout({ isOpen, onClose, items }: CheckoutProps) {
   const [open, setOpen] = React.useState(false);
-  const [checkout, setCheckout] = React.useState<CheckoutData | null>(null);
   const [quantity, setQuantity] = React.useState(1);
+  const [checkout, setCheckout] = React.useState<PaymentItem>();
 
   React.useEffect(() => {
     if (isOpen) {
       setQuantity(1);
     }
-  }, [isOpen, items?.id]);
+  }, [isOpen, items?._id]);
 
   const onCheckout = () => {
     if (!items) return;
 
-    const value = {
-      item: items.id,
-      quantity,
-      price: items.price * quantity,
+    const value: PaymentItem = {
+      amount: items.price * quantity,
+      items: [
+        {
+          _id: items._id || "",
+          name: items.name,
+          price: items.price,
+          quantity,
+        },
+      ],
     };
 
     setCheckout(value);
