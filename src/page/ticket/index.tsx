@@ -157,41 +157,47 @@ export default function BasketPage() {
                     </div>
                   </div>
                   <div className="py-1">
-                    {(item.quantity ?? 0) > 1 ? (
-                      <div className="relative w-full">
-                        <Swiper spaceBetween={20} slidesPerView={1.1}>
-                          {Array.from({
-                            length: item.quantity || item.orderIds?.length || 1,
-                          }).map((_, oIdx) => {
-                            const singleTicket = {
-                              ...item,
-                              _id:
-                                item.tranIds?.[oIdx] ||
-                                item.orderIds?.[oIdx] ||
-                                item._id,
-                              orderIds: item.orderIds?.[oIdx]
-                                ? [item.orderIds[oIdx]]
-                                : item.orderIds,
-                              tranIds: item.tranIds?.[oIdx]
-                                ? [item.tranIds[oIdx]]
-                                : item.tranIds,
-                              quantity: 1,
-                              totalAmount: item.price,
-                              orderCount: 1,
-                            };
+                    {item.quantity > 1 ? (
+                      <Swiper
+                        spaceBetween={16}
+                        slidesPerView={1.04}
+                        className="w-full"
+                      >
+                        {Array.from({
+                          length: item.quantity || item.orderIds?.length || 1,
+                        }).map((_, oIdx) => {
+                          const orderId = item.orderIds?.[oIdx];
+                          const tranId = item.tranIds?.[oIdx];
 
-                            return (
-                              <SwiperSlide key={item.orderIds?.[oIdx] || oIdx}>
+                          const singleTicket: Orders = {
+                            ...item,
+                            _id: tranId || orderId || item._id,
+                            orderIds: orderId ? [orderId] : [],
+                            tranIds: tranId ? [tranId] : [],
+                            quantity: 1,
+                            totalAmount: item.price,
+                            orderCount: 1,
+                          };
+
+                          return (
+                            <SwiperSlide
+                              key={orderId || tranId || oIdx}
+                              className="w-full"
+                            >
+                              <div
+                                onClick={() => onScan(item)}
+                                className="cursor-pointer"
+                              >
                                 <Ticket item={singleTicket} />
-                              </SwiperSlide>
-                            );
-                          })}
-                        </Swiper>
-                      </div>
+                              </div>
+                            </SwiperSlide>
+                          );
+                        })}
+                      </Swiper>
                     ) : (
                       <div
                         onClick={() => onScan(item)}
-                        className="overflow-x-auto"
+                        className="cursor-pointer"
                       >
                         <Ticket item={item} />
                       </div>
