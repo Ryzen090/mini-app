@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 
-export default function Auth() {
+function AuthContent() {
   const searchParams = useSearchParams();
 
   useEffect(() => {
@@ -20,4 +20,12 @@ export default function Auth() {
   }, [searchParams]);
 
   return null;
+}
+
+export default function Auth() {
+  return (
+    <Suspense fallback={null}>
+      <AuthContent />
+    </Suspense>
+  );
 }
