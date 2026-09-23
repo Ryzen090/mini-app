@@ -34,12 +34,12 @@ export default function Scan({ isOpen, item, onClose }: ScanProps) {
 
         <div className="relative flex items-center justify-between px-6 pt-6 pb-2">
           <div>
+            <h2 className="text-xl font-semibold tracking-tight text-white">
+              {item.name}
+            </h2>
             <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-indigo-400">
               Verified Pass
             </span>
-            <h2 className="text-xl font-semibold tracking-tight text-white">
-              Ticket Zone {item.name}
-            </h2>
           </div>
 
           <button
@@ -92,9 +92,6 @@ export default function Scan({ isOpen, item, onClose }: ScanProps) {
                     </div>
 
                     <div className="w-full text-center">
-                      <span className="text-[10px] uppercase tracking-widest text-zinc-500 block mb-1">
-                        Secure Token ID
-                      </span>
                       <p className="font-mono text-xs tracking-wider text-zinc-400 bg-black/40 py-2 px-3 rounded-xl border border-white/5 truncate">
                         {orderId}
                       </p>
