@@ -1,8 +1,8 @@
 "use client";
 
 import MyImage from "@/components/image";
+import { useEffect, useState } from "react";
 import { PAYMENT_STATUS } from "@/model/enum";
-import React, { useEffect, useState } from "react";
 import { PaymentItem, Payments } from "@/model/payment";
 import { checkPayment, createPayment } from "@/service/payment.service";
 
@@ -129,7 +129,7 @@ export default function Payment({ isOpen, item, onClose }: PaymentProps) {
               <div className="flex items-center justify-between">
                 <span className="text-sm text-zinc-500">Amount</span>
                 <span className="text-lg font-bold text-black">
-                  ${item.amount.toFixed(2)}
+                  ${item.items[0]?.price.toFixed(2)}
                 </span>
               </div>
               <div className="mt-2 flex items-center justify-between">

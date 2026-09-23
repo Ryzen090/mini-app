@@ -12,9 +12,13 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 
+import Scan from "../scan";
+
 export default function BasketPage() {
-  const [orders, setOrders] = useState<Orders[]>([]);
+  const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [orders, setOrders] = useState<Orders[]>([]);
+  const [scanOrder, setScanOrder] = useState<Orders | null>(null);
 
   useEffect(() => {
     let isMounted = true;
@@ -38,6 +42,11 @@ export default function BasketPage() {
       isMounted = false;
     };
   }, []);
+
+  const onScan = (item: Orders) => {
+    setScanOrder(item);
+    setOpen(true);
+  };
 
   return (
     <div className="relative flex min-h-screen flex-col overflow-hidden bg-[#050507] pt-[96px] pb-16 text-slate-100">
@@ -180,7 +189,10 @@ export default function BasketPage() {
                         </Swiper>
                       </div>
                     ) : (
-                      <div className="overflow-x-auto">
+                      <div
+                        onClick={() => onScan(item)}
+                        className="overflow-x-auto"
+                      >
                         <Ticket item={item} />
                       </div>
                     )}
@@ -189,6 +201,10 @@ export default function BasketPage() {
               );
             })}
           </div>
+        )}
+
+        {open && (
+          <Scan isOpen={open} item={scanOrder} onClose={() => setOpen(false)} />
         )}
       </div>
     </div>

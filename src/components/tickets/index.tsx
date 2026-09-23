@@ -160,7 +160,10 @@ export const Ticket: React.FC<TicketProps> = ({ item }: TicketProps) => {
             </div>
 
             <div className="rounded-lg border-2 border-white bg-white p-1 shadow-md">
-              <QRCode _id={item?._id} />
+              <QRCode
+                _id={item?._id}
+                className="h-10 w-10 rounded bg-white sm:h-12 sm:w-12"
+              />
             </div>
           </div>
 

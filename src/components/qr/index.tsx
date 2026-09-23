@@ -5,7 +5,13 @@ import { useEffect, useState } from "react";
 import QRCode from "qrcode";
 import MyImage from "../image";
 
-export default function QR({ _id }: { _id?: string }) {
+export default function QR({
+  _id,
+  className,
+}: {
+  _id?: string;
+  className?: string;
+}) {
   const [qrCode, setQrCode] = useState("");
 
   useEffect(() => {
@@ -28,10 +34,6 @@ export default function QR({ _id }: { _id?: string }) {
   if (!qrCode) return null;
 
   return (
-    <MyImage
-      src={qrCode}
-      alt={`QR Code for ${_id}`}
-      className="h-10 w-10 rounded bg-white sm:h-12 sm:w-12"
-    />
+    <MyImage src={qrCode} alt={`QR Code for ${_id}`} className={className} />
   );
 }

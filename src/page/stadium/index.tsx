@@ -55,15 +55,12 @@ export default function HomePage() {
 
     if (!group?.id) return;
 
-    const zone = tickets.find((ticket) => ticket.name === group.id);
+    const ticket = tickets.find((ticket) => ticket.name === group.id);
 
-    if (!zone) return;
+    if (!ticket) return;
 
-    if (zone.available <= 0) {
-      return;
-    }
-
-    setItems(zone);
+    setItems(ticket);
+    setOpen(true);
   };
 
   return (
