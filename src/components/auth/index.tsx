@@ -13,6 +13,8 @@ function AuthContent() {
 
     localStorage.setItem("token", token);
 
+    window.dispatchEvent(new Event("auth-changed"));
+
     const url = new URL(window.location.href);
     url.searchParams.delete("token");
 

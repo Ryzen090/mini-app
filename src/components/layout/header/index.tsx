@@ -34,13 +34,26 @@ export default function Header() {
           Object.keys(currentUser).length > 0
         ) {
           setUser(currentUser);
+        } else {
+          setUser(null);
         }
       } catch (error) {
         console.error("Failed to load current user:", error);
+        setUser(null);
       }
     };
 
     loadUser();
+
+    const handleAuthChanged = () => {
+      loadUser();
+    };
+
+    window.addEventListener("auth-changed", handleAuthChanged);
+
+    return () => {
+      window.removeEventListener("auth-changed", handleAuthChanged);
+    };
   }, []);
 
   const handleLogout = async () => {
