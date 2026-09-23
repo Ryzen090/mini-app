@@ -17,10 +17,13 @@ export default function Checkout({ isOpen, onClose, items }: CheckoutProps) {
   const [quantity, setQuantity] = React.useState(1);
   const [checkout, setCheckout] = React.useState<PaymentItem>();
 
+  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+
   React.useEffect(() => {
-    if (isOpen) {
-      setQuantity(1);
-    }
+    if (!isOpen) return;
+
+    setQuantity(1);
+    setIsLoggedIn(Boolean(localStorage.getItem("token")));
   }, [isOpen, items?._id]);
 
   const onCheckout = () => {
@@ -60,7 +63,7 @@ export default function Checkout({ isOpen, onClose, items }: CheckoutProps) {
             <div className="relative flex items-center justify-between border-b border-zinc-800/80 px-5 py-4">
               <div>
                 <h2 className="mt-1 text-lg font-semibold text-white uppercase">
-                  your tickets {items.name}
+                  tickets {items.name}
                 </h2>
               </div>
 
@@ -102,7 +105,7 @@ export default function Checkout({ isOpen, onClose, items }: CheckoutProps) {
                       setQuantity((current) => Math.max(1, current - 1))
                     }
                     disabled={quantity <= 1}
-                    className="flex h-11 w-11 items-center justify-center rounded-xl bg-zinc-800 text-xl font-bold text-white transition-all hover:bg-zinc-700 active:scale-95 disabled:cursor-not-allowed disabled:opacity-30"
+                    className="flex cursor-pointer h-11 w-11 items-center justify-center rounded-xl bg-zinc-800 text-xl font-bold text-white transition-all hover:bg-zinc-700 active:scale-95 disabled:cursor-not-allowed disabled:opacity-30"
                   >
                     −
                   </button>
@@ -125,7 +128,7 @@ export default function Checkout({ isOpen, onClose, items }: CheckoutProps) {
                       )
                     }
                     disabled={quantity >= (items.available ?? 0)}
-                    className="flex h-11 w-11 items-center justify-center rounded-xl bg-zinc-800 text-xl font-bold text-white transition-all hover:bg-zinc-700 active:scale-95 disabled:cursor-not-allowed disabled:opacity-30"
+                    className="flex h-11 w-11 items-center cursor-pointer justify-center rounded-xl bg-zinc-800 text-xl font-bold text-white transition-all hover:bg-zinc-700 active:scale-95 disabled:cursor-not-allowed disabled:opacity-30"
                   >
                     +
                   </button>
@@ -180,26 +183,48 @@ export default function Checkout({ isOpen, onClose, items }: CheckoutProps) {
                 </div>
               </div>
 
-              <button
-                type="button"
-                onClick={onCheckout}
-                className="group flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-white font-semibold text-black transition hover:bg-zinc-200 active:scale-[0.99]"
-              >
-                Checkout
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  className="h-4 w-4 transition-transform group-hover:translate-x-1"
+              {!isLoggedIn ? (
+                <button
+                  type="button"
+                  onClick={() => {
+                    window.location.href = `${process.env.NEXT_PUBLIC_API_URL}${process.env.NEXT_PUBLIC_GOOGLE}`;
+                  }}
+                  className="group cursor-pointer flex h-12 w-full items-center justify-center gap-3 rounded-xl bg-white font-semibold text-zinc-900 transition hover:bg-zinc-100 active:scale-[0.99]"
                 >
-                  <path
-                    d="M5 12H19M13 6L19 12L13 18"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </button>
+                  <svg
+                    viewBox="0 0 24 24"
+                    className="h-5 w-5"
+                    aria-hidden="true"
+                  >
+                    <path
+                      fill="#4285F4"
+                      d="M21.35 12.27c0-.71-.06-1.4-.18-2.05H12v3.88h5.24a4.48 4.48 0 0 1-1.94 2.94v2.45h3.14c1.84-1.69 2.91-4.18 2.91-7.22Z"
+                    />
+                    <path
+                      fill="#34A853"
+                      d="M12 21.8c2.63 0 4.84-.87 6.45-2.36l-3.14-2.45c-.87.58-1.98.92-3.31.92-2.54 0-4.69-1.72-5.46-4.03H3.3v2.53A9.75 9.75 0 0 0 12 21.8Z"
+                    />
+                    <path
+                      fill="#FBBC05"
+                      d="M6.54 13.88A5.86 5.86 0 0 1 6.23 12c0-.65.11-1.28.31-1.88V7.59H3.3A9.8 9.8 0 0 0 2.2 12c0 1.58.38 3.08 1.1 4.41l3.24-2.53Z"
+                    />
+                    <path
+                      fill="#EA4335"
+                      d="M12 6.09c1.43 0 2.71.49 3.72 1.45l2.79-2.79C16.84 3.18 14.63 2.2 12 2.2a9.75 9.75 0 0 0-8.7 5.39l3.24 2.53C7.31 7.81 9.46 6.09 12 6.09Z"
+                    />
+                  </svg>
+
+                  <span>Continue with Google</span>
+                </button>
+              ) : isLoggedIn ? (
+                <button
+                  type="button"
+                  onClick={onCheckout}
+                  className="group cursor-pointer flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-white font-semibold text-zinc-900 shadow-sm transition-all hover:bg-zinc-100 hover:shadow-md active:scale-[0.99]"
+                >
+                  <span>Continue to Payment</span>
+                </button>
+              ) : null}
             </div>
           </div>
         </div>
