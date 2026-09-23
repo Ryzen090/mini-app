@@ -19,6 +19,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "PKRSR",
   description: "PKRSR",
+  icons: {
+    icon: ["/logo.svg"],
+  },
 };
 
 export default function RootLayout({
