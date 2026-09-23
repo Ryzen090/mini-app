@@ -1,5 +1,6 @@
 "use client";
 
+import { Loader } from "@/components";
 import MyImage from "@/components/image";
 import { useEffect, useState } from "react";
 import { PAYMENT_STATUS } from "@/model/enum";
@@ -119,8 +120,7 @@ export default function Payment({ isOpen, item, onClose }: PaymentProps) {
         <div>
           {loading && (
             <div className="flex h-56 flex-col items-center justify-center">
-              <div className="h-6 w-6 animate-spin rounded-full border-2 border-zinc-200 border-t-zinc-900" />
-              <p className="mt-3 text-xs text-zinc-400">Preparing payment...</p>
+              <Loader size={46} color="black" />
             </div>
           )}
 

@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { Ticket } from "@/components";
 import { Orders } from "@/model/order";
 import { useEffect, useState } from "react";
+import { Loader, Ticket } from "@/components";
 import { getOrders } from "@/service/order.service";
 
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -82,11 +82,8 @@ export default function BasketPage() {
         </div>
 
         {loading ? (
-          <div className="flex flex-col items-center justify-center py-16 text-center">
-            <div className="h-10 w-10 animate-spin rounded-full border-3 border-[#ff3b30] border-t-transparent" />
-            <p className="mt-4 text-sm font-semibold text-zinc-400">
-              Loading tickets...
-            </p>
+          <div className="flex flex-col items-center justify-center rounded-3xl border border-zinc-800/80 bg-zinc-950/60 py-16 text-center backdrop-blur-xl">
+            <Loader size={36} />
           </div>
         ) : orders.length === 0 ? (
           <div className="flex flex-col items-center justify-center rounded-3xl border border-zinc-800/80 bg-zinc-950/60 py-16 text-center backdrop-blur-xl">
