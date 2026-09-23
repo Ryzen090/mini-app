@@ -1,0 +1,18 @@
+.spinner line {
+  stroke-dasharray: 10;
+  stroke-dashoffset: 10;
+  animation: loaderDash 2.4s ease-in-out infinite;
+}
+
+@keyframes loaderDash {
+  0%,
+  100% {
+    stroke-dashoffset: 10;
+    opacity: 0.8;
+  }
+
+  50% {
+    stroke-dashoffset: 0;
+    opacity: 0.4;
+  }
+}
