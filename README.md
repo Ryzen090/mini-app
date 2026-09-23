@@ -35,6 +35,6 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 
-NEXT_PUBLIC_API_URL=http://localhost:9000/api/v1
+NEXT_PUBLIC_API_URL=https://payway-woxz.onrender.com/api/v1
 NEXT_PUBLIC_GOOGLE=/auth/google
 NEXT_PUBLIC_API_ME=/auth/me
