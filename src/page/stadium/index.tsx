@@ -13,6 +13,7 @@ export default function HomePage() {
   const [tickets, setTickets] = React.useState<Tickets[]>([]);
   const [items, setItems] = React.useState<Tickets | null>(null);
   const [hovered, setHovered] = React.useState<string | null>(null);
+  const [selectedStand, setSelectedStand] = React.useState<string | null>(null);
 
   const featAPI = React.useCallback(async () => {
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/ticket`, {
@@ -30,6 +31,21 @@ export default function HomePage() {
   React.useEffect(() => {
     featAPI();
   }, [featAPI]);
+
+  React.useEffect(() => {
+    const handleOutsideClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement | SVGElement | null;
+      if (target?.closest("[data-stand-card]")) {
+        return;
+      }
+      setSelectedStand(null);
+    };
+
+    window.addEventListener("click", handleOutsideClick);
+    return () => {
+      window.removeEventListener("click", handleOutsideClick);
+    };
+  }, []);
 
   const handlePointerOver = (e: React.PointerEvent<SVGSVGElement>) => {
     const target = e.target as SVGElement;
@@ -54,7 +70,10 @@ export default function HomePage() {
 
     const group = target.closest("g[id]") as SVGGElement | null;
 
-    if (!group?.id) return;
+    if (!group?.id) {
+      setSelectedStand(null);
+      return;
+    }
 
     const ticket = tickets.find((ticket) => ticket.name === group.id);
 
@@ -62,6 +81,10 @@ export default function HomePage() {
 
     setItems(ticket);
     setOpen(true);
+  };
+
+  const handleCardClick = (standId: string) => {
+    setSelectedStand((prev) => (prev === standId ? null : standId));
   };
 
   return (
@@ -148,7 +171,7 @@ export default function HomePage() {
             tickets={tickets}
             handleClick={handleClick}
             hoveredSection={hovered}
-            selectedSection={items?.name}
+            selectedSection={open ? items?.name : selectedStand}
             handlePointerOver={handlePointerOver}
             handlePointerOut={handlePointerOut}
           />
@@ -156,7 +179,11 @@ export default function HomePage() {
           <Checkout
             isOpen={open}
             items={items}
-            onClose={() => setOpen(false)}
+            onClose={() => {
+              setOpen(false);
+              setItems(null);
+              setHovered(null);
+            }}
           />
 
           <div className="w-full mt-6 pt-6 border-t border-zinc-800/80">
@@ -189,12 +216,16 @@ export default function HomePage() {
               ].map((item) => {
                 const isHovered =
                   hovered === item.id || hovered?.startsWith(item.id);
-                const isSelected = items?.name?.startsWith(item.id);
+                const isSelected =
+                  selectedStand === item.id ||
+                  (open && Boolean(items?.name?.startsWith(item.id)));
                 const isActive = isHovered || isSelected;
 
                 return (
                   <div
                     key={item.id}
+                    data-stand-card
+                    onClick={() => handleCardClick(item.id)}
                     onMouseEnter={() => setHovered(item.id)}
                     onMouseLeave={() => setHovered(null)}
                     className={`group flex items-center gap-3 rounded-xl p-3 border transition-all duration-300 cursor-pointer select-none ${
