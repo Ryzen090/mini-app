@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import QR from "@/components/qr";
 import { Orders } from "@/model/order";
 
@@ -17,41 +18,49 @@ interface ScanProps {
 }
 
 export default function Scan({ isOpen, item, onClose }: ScanProps) {
+  const [activeIndex, setActiveIndex] = useState(0);
+
   if (!isOpen || !item) return null;
 
   const orderIds = item.orderIds ?? [];
 
   return (
     <div
-      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/85 p-4 backdrop-blur-xl transition-all duration-300 animate-fadeIn"
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-zinc-950/80 p-4 backdrop-blur-xl transition-all duration-300 animate-in fade-in"
       onMouseDown={onClose}
     >
       <div
-        className="relative w-full max-w-sm overflow-hidden rounded-[2.5rem] border border-white/10 bg-[#0d0d12] shadow-[0_30px_100px_rgba(0,0,0,0.9)]"
+        className="relative w-full max-w-[360px] overflow-hidden rounded-[2.5rem] border border-white/10 bg-[#09090e] shadow-[0_25px_80px_rgba(0,0,0,0.8)]"
         onMouseDown={(e) => e.stopPropagation()}
       >
-        <div className="absolute -top-24 left-1/2 -translate-x-1/2 h-48 w-48 rounded-full bg-indigo-600/20 blur-[60px] pointer-events-none" />
+        {/* Ambient background glows */}
+        <div className="absolute -top-20 -left-20 h-40 w-40 rounded-full bg-violet-600/20 blur-[50px] pointer-events-none" />
+        <div className="absolute -bottom-20 -right-20 h-40 w-40 rounded-full bg-indigo-600/15 blur-[50px] pointer-events-none" />
 
+        {/* Header */}
         <div className="relative flex items-center justify-between px-6 pt-6 pb-2">
           <div>
-            <h2 className="text-xl font-semibold tracking-tight text-white">
+            <h2 className="text-lg font-bold tracking-tight text-white line-clamp-1">
               {item.name}
             </h2>
-            <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-indigo-400">
-              Verified Pass
-            </span>
+            <div className="flex items-center gap-1.5 mt-0.5">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-emerald-400">
+                Verified Event Pass
+              </span>
+            </div>
           </div>
 
           <button
             type="button"
             onClick={onClose}
-            className="group flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-white/10 bg-white/5 text-zinc-400 transition-all duration-200 hover:bg-white/10 hover:text-white hover:scale-105 active:scale-95"
+            className="group flex h-9 w-9 cursor-pointer items-center justify-center rounded-full border border-white/10 bg-white/5 text-zinc-400 transition-all duration-200 hover:bg-white/10 hover:text-white hover:scale-105 active:scale-95"
             aria-label="Close"
           >
             <svg
               viewBox="0 0 24 24"
               fill="none"
-              className="h-5 w-5 transition-transform"
+              className="h-4 w-4 transition-transform"
             >
               <path
                 d="M6 6L18 18M18 6L6 18"
@@ -63,43 +72,61 @@ export default function Scan({ isOpen, item, onClose }: ScanProps) {
           </button>
         </div>
 
-        <div className="px-6 pb-6 pt-4">
+        {/* Content Body */}
+        <div className="px-5 pb-6 pt-2">
           {orderIds.length > 0 ? (
-            <Swiper
-              modules={[Pagination]}
-              spaceBetween={16}
-              slidesPerView={1}
-              className="w-full pb-8 !overflow-visible"
-            >
-              {orderIds.map((orderId, index) => (
-                <SwiperSlide key={`${orderId}-${index}`} className="w-full">
-                  <div className="relative flex w-full flex-col items-center rounded-3xl border border-white/10 bg-gradient-to-b from-white/[0.07] to-white/[0.02] p-6 shadow-2xl backdrop-blur-md">
-                    <div className="mb-4 inline-flex items-center gap-1.5 rounded-full bg-white/5 px-3 py-1 border border-white/5">
-                      <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                      <span className="text-[11px] font-medium uppercase tracking-wider text-zinc-300">
-                        Ticket {index + 1} of {orderIds.length}
-                      </span>
-                    </div>
+            <div className="relative flex w-full flex-col items-center p-5">
+              {/* Ticket Counter Badge */}
+              <div className="mb-3.5 inline-flex items-center gap-1.5 rounded-full bg-white/5 px-3 py-1 border border-white/5">
+                <span className="text-[11px] font-semibold text-zinc-300">
+                  Pass{" "}
+                  <span className="text-violet-400 font-mono">
+                    {activeIndex + 1}
+                  </span>{" "}
+                  of {orderIds.length}
+                </span>
+              </div>
 
-                    <div className="relative group/qr flex w-full items-center justify-center rounded-2xl bg-white p-6 shadow-[0_10px_30px_rgba(0,0,0,0.3)] transition-transform duration-300 hover:scale-[1.02]">
-                      <QR _id={orderId} className="h-52 w-52" />
+              {/* Swiper Containing Only the QR Codes */}
+              <Swiper
+                modules={[Pagination]}
+                spaceBetween={16}
+                slidesPerView={1}
+                onSlideChange={(swiper) => setActiveIndex(swiper.activeIndex)}
+                pagination={{
+                  clickable: true,
+                  bulletClass:
+                    "swiper-pagination-bullet !bg-white/20 !opacity-100 !w-1.5 !h-1.5 !transition-all",
+                  bulletActiveClass: "!bg-violet-500 !w-4 !rounded-full",
+                }}
+                className="w-full pb-8 !overflow-visible"
+              >
+                {orderIds.map((orderId, index) => (
+                  <SwiperSlide key={`${orderId}-${index}`} className="w-full">
+                    <div className="flex flex-col items-center">
+                      {/* QR Code Container with Holographic/Glow Frame */}
+                      <div className="relative group/qr flex w-full items-center justify-center rounded-2xl bg-white p-5 shadow-[0_8px_30px_rgba(0,0,0,0.4)] border border-white/20 transition-transform duration-300 hover:scale-[1.01]">
+                        <QR _id={orderId} className="h-48 w-48" />
+                      </div>
                     </div>
+                  </SwiperSlide>
+                ))}
+              </Swiper>
 
-                    <div className="relative my-5 w-full flex items-center justify-between text-zinc-700">
-                      <div className="absolute -left-10 h-5 w-5 rounded-full bg-[#0d0d12] border-r border-white/10" />
-                      <div className="w-full border-t border-dashed border-white/15 mx-3" />
-                      <div className="absolute -right-10 h-5 w-5 rounded-full bg-[#0d0d12] border-l border-white/10" />
-                    </div>
+              {/* Ticket Notch Divider (Kept) */}
+              <div className="relative my-2 w-full flex items-center justify-between text-zinc-700">
+                <div className="absolute -left-8 h-4 w-4 rounded-full bg-[#09090e] border-r border-white/10" />
+                <div className="w-full border-t border-dashed border-white/15 mx-2" />
+                <div className="absolute -right-8 h-4 w-4 rounded-full bg-[#09090e] border-l border-white/10" />
+              </div>
 
-                    <div className="w-full text-center">
-                      <p className="font-mono text-xs tracking-wider text-zinc-400 bg-black/40 py-2 px-3 rounded-xl border border-white/5 truncate">
-                        {orderId}
-                      </p>
-                    </div>
-                  </div>
-                </SwiperSlide>
-              ))}
-            </Swiper>
+              {/* Order ID Footer (Border removed) */}
+              <div className="w-full text-center mt-3">
+                <p className="font-mono text-[11px] tracking-wider text-zinc-400 bg-black/50 py-2 px-3 rounded-xl truncate select-all">
+                  {orderIds[activeIndex]}
+                </p>
+              </div>
+            </div>
           ) : (
             <div className="flex flex-col items-center justify-center rounded-3xl border border-white/10 bg-white/[0.02] p-10 text-center">
               <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white/5 text-zinc-500 mb-3">
