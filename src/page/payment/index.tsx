@@ -120,7 +120,7 @@ export default function Payment({ isOpen, item, onClose }: PaymentProps) {
         <div>
           {loading && (
             <div className="flex h-56 flex-col items-center justify-center">
-              <Loader size={46} color="black" />
+              <Loader size={36} color="black" />
             </div>
           )}
 

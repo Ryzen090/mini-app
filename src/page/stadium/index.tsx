@@ -148,6 +148,7 @@ export default function HomePage() {
             tickets={tickets}
             handleClick={handleClick}
             hoveredSection={hovered}
+            selectedSection={items?.name}
             handlePointerOver={handlePointerOver}
             handlePointerOut={handlePointerOut}
           />
@@ -185,29 +186,62 @@ export default function HomePage() {
                   sub: "D1 (Lower) / D2 (Upper)",
                   color: "#8e24aa",
                 },
-              ].map((item) => (
-                <div
-                  key={item.id}
-                  className="flex items-center gap-3 bg-zinc-950/60 rounded-xl p-3 border border-zinc-800/60"
-                >
+              ].map((item) => {
+                const isHovered =
+                  hovered === item.id || hovered?.startsWith(item.id);
+                const isSelected = items?.name?.startsWith(item.id);
+                const isActive = isHovered || isSelected;
+
+                return (
                   <div
-                    className="w-4 h-4 rounded-md shadow-sm shrink-0"
+                    key={item.id}
+                    onMouseEnter={() => setHovered(item.id)}
+                    onMouseLeave={() => setHovered(null)}
+                    className={`group flex items-center gap-3 rounded-xl p-3 border transition-all duration-300 cursor-pointer select-none ${
+                      isActive
+                        ? "bg-zinc-900/90 scale-[1.02]"
+                        : "bg-zinc-950/60 border-zinc-800/60 hover:bg-zinc-900/70 hover:border-zinc-700/80 hover:scale-[1.01]"
+                    }`}
                     style={{
-                      backgroundColor: item.color,
+                      borderColor: isActive ? item.color : undefined,
+                      boxShadow: isActive
+                        ? `0 0 20px ${item.color}35, inset 0 0 12px ${item.color}15`
+                        : undefined,
                     }}
-                  />
+                  >
+                    <div
+                      className="w-4 h-4 rounded-md shadow-sm shrink-0 transition-all duration-300"
+                      style={{
+                        backgroundColor: item.color,
+                        transform: isActive ? "scale(1.15)" : undefined,
+                        boxShadow: isActive
+                          ? `0 0 12px ${item.color}80`
+                          : undefined,
+                      }}
+                    />
 
-                  <div className="min-w-0">
-                    <p className="text-xs font-bold text-white truncate">
-                      {item.name}
-                    </p>
+                    <div className="min-w-0">
+                      <p
+                        className={`text-xs font-bold truncate transition-colors duration-200 ${
+                          isActive
+                            ? "text-white"
+                            : "text-zinc-200 group-hover:text-white"
+                        }`}
+                      >
+                        {item.name}
+                      </p>
 
-                    <p className="text-[10px] text-zinc-400 truncate">
-                      {item.sub}
-                    </p>
+                      <p
+                        className={`text-[10px] truncate transition-colors duration-200 ${
+                          isActive ? "text-zinc-300" : "text-zinc-400"
+                        }`}
+                      >
+                        {item.sub}
+                      </p>
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </div>

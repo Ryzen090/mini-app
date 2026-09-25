@@ -6,6 +6,7 @@ import { SETS, STATUS, THEME_COLORS } from "@/model/enum";
 
 type StadiumProps = {
   hoveredSection?: string | null;
+  selectedSection?: string | null;
   tickets: Tickets[];
 
   handleClick: (event: React.MouseEvent<SVGSVGElement>) => void;
@@ -15,6 +16,7 @@ type StadiumProps = {
 
 export default function Stadium({
   hoveredSection,
+  selectedSection,
   tickets,
   handlePointerOver,
   handlePointerOut,
@@ -39,7 +41,9 @@ export default function Stadium({
         }
 
         svg[data-hovered="${select}"] #${select} .shape,
-        svg[data-selected="${select}"] #${select} .shape {
+        svg[data-hovered="${select[0]}"] #${select} .shape,
+        svg[data-selected="${select}"] #${select} .shape,
+        svg[data-selected="${select[0]}"] #${select} .shape {
           fill: #52525b;
           opacity: 0.85;
           filter: drop-shadow(
@@ -54,7 +58,8 @@ export default function Stadium({
         fill: ${theme.base};
       }
 
-      svg[data-hovered="${select}"] #${select} .shape {
+      svg[data-hovered="${select}"] #${select} .shape,
+      svg[data-hovered="${select[0]}"] #${select} .shape {
         fill: ${theme.hover};
         opacity: 1;
         filter: drop-shadow(
@@ -62,7 +67,8 @@ export default function Stadium({
         );
       }
 
-      svg[data-selected="${select}"] #${select} .shape {
+      svg[data-selected="${select}"] #${select} .shape,
+      svg[data-selected="${select[0]}"] #${select} .shape {
         fill: ${theme.hover};
         opacity: 1;
         filter: drop-shadow(
@@ -85,6 +91,7 @@ export default function Stadium({
         height: "auto",
       }}
       data-hovered={hoveredSection || undefined}
+      data-selected={selectedSection || undefined}
       onPointerOver={handlePointerOver}
       onPointerOut={handlePointerOut}
       onClick={handleClick}
