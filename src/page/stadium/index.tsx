@@ -6,6 +6,7 @@ import Checkout from "../checkout";
 import Stadium from "@/components/stadium";
 
 import { Tickets } from "@/model/ticket";
+import { STATUS } from "@/model/enum";
 
 export default function HomePage() {
   const [open, setOpen] = React.useState(false);
@@ -57,7 +58,7 @@ export default function HomePage() {
 
     const ticket = tickets.find((ticket) => ticket.name === group.id);
 
-    if (!ticket) return;
+    if (!ticket || ticket.status === STATUS.InActive) return;
 
     setItems(ticket);
     setOpen(true);

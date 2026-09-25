@@ -26,7 +26,7 @@ export default function Stadium({
       hover: "#94a3b8",
     };
 
-    const ticket = tickets.find((ticket) => ticket._id === select);
+    const ticket = tickets.find((ticket) => ticket.name === select);
 
     const InActive = ticket?.status === STATUS.InActive;
 
