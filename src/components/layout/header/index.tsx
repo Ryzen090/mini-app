@@ -84,7 +84,7 @@ export default function Header() {
         </Link>
 
         <Link
-          href="/ticket"
+          href="/shop"
           className="relative text-lg font-black uppercase italic transition hover:text-[#ff3b30]"
         >
           SHOP
