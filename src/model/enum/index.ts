@@ -4,6 +4,11 @@ export enum PAYMENT_STATUS {
   FAILED = "FAILED",
 }
 
+export enum ORDER_STATUS {
+  PENDING = "PENDING",
+  REDEEMED = "REDEEMED",
+}
+
 export enum STATUS {
   InActive = 1,
   Active = 2,

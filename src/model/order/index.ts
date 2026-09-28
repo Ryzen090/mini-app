@@ -1,12 +1,13 @@
-import { PAYMENT_STATUS } from "../enum";
+import { ORDER_STATUS } from "../enum";
+import { Item } from "../payment";
 
 export interface Orders {
   _id: string;
-  name: string;
+  orderId?: string;
+  tranId?: string;
+  userId?: string;
+  item: Item;
   quantity: number;
-  price: number;
-  totalAmount?: number;
-  orderIds: string[];
-  tranIds: string[];
-  orderCount?: number;
+  amount: number;
+  tickets: { code: string; status: ORDER_STATUS }[];
 }

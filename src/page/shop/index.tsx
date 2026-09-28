@@ -14,7 +14,7 @@ import "swiper/css/navigation";
 
 import Scan from "../scan";
 
-export default function BasketPage() {
+export default function Shop() {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [orders, setOrders] = useState<Orders[]>([]);
@@ -118,9 +118,8 @@ export default function BasketPage() {
           </div>
         ) : (
           <div className="flex flex-col gap-8">
-            {orders.map((item, idx) => {
-              const itemTotal =
-                item.totalAmount ?? item.price * (item.quantity || 1);
+            {orders.map((data, idx) => {
+              const item = data.item;
 
               return (
                 <div
@@ -137,7 +136,7 @@ export default function BasketPage() {
                       <span className="rounded-lg border border-zinc-800 bg-zinc-900 px-2.5 py-1 font-bold text-zinc-300">
                         Qty:{" "}
                         <span className="font-extrabold text-white ">
-                          {item.quantity}
+                          {data.quantity}
                         </span>
                       </span>
                     </div>
@@ -145,44 +144,40 @@ export default function BasketPage() {
                     <div className="flex items-center gap-3">
                       <div className="text-right">
                         <span className="text-sm  font-bold font-mono text-white sm:text-base">
-                          ${itemTotal.toFixed(2)}
+                          ${data.amount.toFixed(2)}
                         </span>
                         <span className="ml-1 text-[11px] font-mono text-zinc-400">
-                          ({(itemTotal * 4000).toLocaleString()} ៛)
+                          ({(data.amount * 4000).toLocaleString()} ៛)
                         </span>
                       </div>
                     </div>
                   </div>
                   <div className="py-1">
-                    {item.quantity > 1 ? (
+                    {data.quantity > 1 ? (
                       <Swiper
                         spaceBetween={16}
                         slidesPerView={1.04}
                         className="w-full"
                       >
-                        {Array.from({
-                          length: item.quantity || item.orderIds?.length || 1,
-                        }).map((_, oIdx) => {
-                          const orderId = item.orderIds?.[oIdx];
-                          const tranId = item.tranIds?.[oIdx];
-
-                          const singleTicket: Orders = {
+                        {data.tickets.map((ticket, oIdx) => {
+                          const singleTicket = {
                             ...item,
-                            _id: tranId || orderId || item._id,
-                            orderIds: orderId ? [orderId] : [],
-                            tranIds: tranId ? [tranId] : [],
+                            _id: item._id,
+                            orderId: ticket.code,
+                            tranId: data.tranId,
                             quantity: 1,
-                            totalAmount: item.price,
-                            orderCount: 1,
+                            amount: item.price,
+                            qrCode: ticket.code,
+                            ticketStatus: ticket.status,
                           };
 
                           return (
                             <SwiperSlide
-                              key={orderId || tranId || oIdx}
+                              key={ticket.code || oIdx}
                               className="w-full"
                             >
                               <div
-                                onClick={() => onScan(item)}
+                                onClick={() => onScan(data)}
                                 className="cursor-pointer"
                               >
                                 <Ticket item={singleTicket} />
@@ -193,7 +188,7 @@ export default function BasketPage() {
                       </Swiper>
                     ) : (
                       <div
-                        onClick={() => onScan(item)}
+                        onClick={() => onScan(data)}
                         className="cursor-pointer"
                       >
                         <Ticket item={item} />
@@ -207,7 +202,7 @@ export default function BasketPage() {
         )}
 
         {open && (
-          <Scan isOpen={open} item={scanOrder} onClose={() => setOpen(false)} />
+          <Scan isOpen={open} data={scanOrder} onClose={() => setOpen(false)} />
         )}
       </div>
     </div>

@@ -13,16 +13,14 @@ import "swiper/css/effect-creative";
 
 interface ScanProps {
   isOpen: boolean;
-  item: Orders | null;
+  data: Orders | null;
   onClose: () => void;
 }
 
-export default function Scan({ isOpen, item, onClose }: ScanProps) {
+export default function Scan({ isOpen, data, onClose }: ScanProps) {
   const [activeIndex, setActiveIndex] = useState(0);
 
-  if (!isOpen || !item) return null;
-
-  const orderIds = item.orderIds ?? [];
+  if (!isOpen || !data) return null;
 
   return (
     <div
@@ -33,15 +31,13 @@ export default function Scan({ isOpen, item, onClose }: ScanProps) {
         className="relative w-full max-w-[360px] overflow-hidden rounded-[2.5rem] border border-white/10 bg-[#09090e] shadow-[0_25px_80px_rgba(0,0,0,0.8)]"
         onMouseDown={(e) => e.stopPropagation()}
       >
-        {/* Ambient background glows */}
         <div className="absolute -top-20 -left-20 h-40 w-40 rounded-full bg-violet-600/20 blur-[50px] pointer-events-none" />
         <div className="absolute -bottom-20 -right-20 h-40 w-40 rounded-full bg-indigo-600/15 blur-[50px] pointer-events-none" />
 
-        {/* Header */}
         <div className="relative flex items-center justify-between px-6 pt-6 pb-2">
           <div>
             <h2 className="text-lg font-bold tracking-tight text-white line-clamp-1">
-              {item.name}
+              {data.item.name}
             </h2>
             <div className="flex items-center gap-1.5 mt-0.5">
               <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
@@ -72,22 +68,19 @@ export default function Scan({ isOpen, item, onClose }: ScanProps) {
           </button>
         </div>
 
-        {/* Content Body */}
         <div className="px-5 pb-6 pt-2">
-          {orderIds.length > 0 ? (
+          {data.tickets.length > 0 ? (
             <div className="relative flex w-full flex-col items-center p-5">
-              {/* Ticket Counter Badge */}
               <div className="mb-3.5 inline-flex items-center gap-1.5 rounded-full bg-white/5 px-3 py-1 border border-white/5">
                 <span className="text-[11px] font-semibold text-zinc-300">
                   Pass{" "}
                   <span className="text-violet-400 font-mono">
                     {activeIndex + 1}
                   </span>{" "}
-                  of {orderIds.length}
+                  of {data.tickets.length}
                 </span>
               </div>
 
-              {/* Swiper Containing Only the QR Codes */}
               <Swiper
                 modules={[Pagination]}
                 spaceBetween={16}
@@ -101,29 +94,26 @@ export default function Scan({ isOpen, item, onClose }: ScanProps) {
                 }}
                 className="w-full pb-8 !overflow-visible"
               >
-                {orderIds.map((orderId, index) => (
-                  <SwiperSlide key={`${orderId}-${index}`} className="w-full">
+                {data.tickets.map((ticket, index) => (
+                  <SwiperSlide key={index} className="w-full">
                     <div className="flex flex-col items-center">
-                      {/* QR Code Container with Holographic/Glow Frame */}
                       <div className="relative group/qr flex w-full items-center justify-center rounded-2xl bg-white p-5 shadow-[0_8px_30px_rgba(0,0,0,0.4)] border border-white/20 transition-transform duration-300 hover:scale-[1.01]">
-                        <QR _id={orderId} className="h-48 w-48" />
+                        <QR _id={ticket.code} className="h-48 w-48" />
                       </div>
                     </div>
                   </SwiperSlide>
                 ))}
               </Swiper>
 
-              {/* Ticket Notch Divider (Kept) */}
               <div className="relative my-2 w-full flex items-center justify-between text-zinc-700">
                 <div className="absolute -left-8 h-4 w-4 rounded-full bg-[#09090e] border-r border-white/10" />
                 <div className="w-full border-t border-dashed border-white/15 mx-2" />
                 <div className="absolute -right-8 h-4 w-4 rounded-full bg-[#09090e] border-l border-white/10" />
               </div>
 
-              {/* Order ID Footer (Border removed) */}
               <div className="w-full text-center mt-3">
                 <p className="font-mono text-[11px] tracking-wider text-zinc-400 bg-black/50 py-2 px-3 rounded-xl truncate select-all">
-                  {orderIds[activeIndex]}
+                  {data.tickets[activeIndex].code}
                 </p>
               </div>
             </div>
