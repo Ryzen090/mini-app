@@ -5,8 +5,9 @@ import React from "react";
 import Checkout from "../checkout";
 import Stadium from "@/components/stadium";
 
-import { Tickets } from "@/model/ticket";
 import { STATUS } from "@/model/enum";
+import { Tickets } from "@/model/ticket";
+import { getTickets } from "@/service/ticket.service";
 
 export default function HomePage() {
   const [open, setOpen] = React.useState(false);
@@ -15,22 +16,22 @@ export default function HomePage() {
   const [hovered, setHovered] = React.useState<string | null>(null);
   const [selectedStand, setSelectedStand] = React.useState<string | null>(null);
 
-  const featAPI = React.useCallback(async () => {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/ticket`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      cache: "no-store",
-    });
-
-    const result = await response.json();
-    setTickets(result.data.items || []);
+  const fetchTickets = React.useCallback(async () => {
+    try {
+      const data = await getTickets();
+      setTickets(data);
+    } catch (error) {}
   }, []);
 
   React.useEffect(() => {
-    featAPI();
-  }, [featAPI]);
+    fetchTickets();
+
+    const interval = setInterval(() => {
+      fetchTickets();
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [fetchTickets]);
 
   React.useEffect(() => {
     const handleOutsideClick = (e: MouseEvent) => {

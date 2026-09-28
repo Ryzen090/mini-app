@@ -15,17 +15,19 @@ export async function createPayment(
       items: [
         {
           _id: item.items[0]._id,
-          name: item.items[0].name,
           quantity: item.items[0].quantity,
-          price: item.items[0].price,
         },
       ],
     }),
   });
 
-  const data: PaymentResponse = await response.json();
+  const data = await response.json();
 
-  return data;
+  if (!response.ok) {
+    throw new Error(data?.message);
+  }
+
+  return data as PaymentResponse;
 }
 
 export async function checkPayment(tranId: string): Promise<any> {

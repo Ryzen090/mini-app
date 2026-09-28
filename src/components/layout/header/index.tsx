@@ -38,7 +38,6 @@ export default function Header() {
           setUser(null);
         }
       } catch (error) {
-        console.error("Failed to load current user:", error);
         setUser(null);
       }
     };
@@ -57,13 +56,9 @@ export default function Header() {
   }, []);
 
   const handleLogout = async () => {
-    try {
-      await logout();
-      setUser(null);
-      setIsDropdownOpen(false);
-    } catch (error) {
-      console.error("Logout failed:", error);
-    }
+    await logout();
+    setUser(null);
+    setIsDropdownOpen(false);
   };
 
   const avatarUrl = user?.picture || user?.avatar || user?.photo || user?.image;

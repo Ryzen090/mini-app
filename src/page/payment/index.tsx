@@ -53,7 +53,12 @@ export default function Payment({ isOpen, item, onClose }: PaymentProps) {
         const response = await createPayment(item);
         if (isMounted) setPayment(response as unknown as Payments);
       } catch (err) {
-        if (isMounted) setError("Failed to initialize payment.");
+        if (isMounted)
+          setError(
+            err instanceof Error
+              ? err.message
+              : "Failed to initialize payment.",
+          );
       } finally {
         if (isMounted) setLoading(false);
       }
@@ -126,29 +131,32 @@ export default function Payment({ isOpen, item, onClose }: PaymentProps) {
           )}
 
           {error && (
-            <div className="flex h-64 flex-col items-center justify-center px-4">
-              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-red-50 text-red-500 mb-3">
-                <svg
-                  className="h-6 w-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="2"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"
-                  />
-                </svg>
+            <div className="flex h-60 flex-col justify-between px-4">
+              <div className="flex flex-col items-center justify-center text-center my-10">
+                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-red-50 text-red-500 mb-3">
+                  <svg
+                    className="h-6 w-6"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="2"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"
+                    />
+                  </svg>
+                </div>
+                <p className="text-xs font-medium text-zinc-800 mb-1">
+                  Something went wrong
+                </p>
+                <p className="text-[11px] text-zinc-400">{error}</p>
               </div>
-              <p className="text-xs font-medium text-zinc-800 mb-1">
-                Something went wrong
-              </p>
-              <p className="text-[11px] text-zinc-400 mb-5">{error}</p>
+
               <button
                 onClick={onClose}
-                className="w-full rounded-xl bg-zinc-900 py-2.5 text-xs text-white font-medium hover:bg-zinc-800 transition shadow-sm"
+                className="w-full cursor-pointer rounded-xl bg-zinc-900 py-2.5 text-xs text-white font-medium hover:bg-zinc-800 transition shadow-sm"
               >
                 Dismiss
               </button>
