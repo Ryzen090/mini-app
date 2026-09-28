@@ -8,3 +8,14 @@ export type Item = {
   quantity: number;
   price: number;
 };
+
+export type Payments = {
+  qrImage: string;
+  description: string;
+  status: IStatus;
+};
+
+type IStatus = {
+  tran_id: string;
+  orderId: string;
+};
